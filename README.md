@@ -24,17 +24,26 @@ GiftCodePlugin is a Minecraft plugin that allows you to manage and use gift code
 Below is an example configuration in the `config.yml` file:
 
 ```yaml
-# List of gift codes and their information
+# Plugin made by QuangDev05
+# Plugin is already at version '${project.version}'
+# Facebook: https://www.facebook.com/quangdev05.2024
+# Discord: quangdev05
+# Discord Community: https://discord.gg/MdgvJnegbM
+# Github: https://github.com/PhamQuang2008/GiftCode
+# Spigot: Comming Soon
+# BuiltByBit: Comming Soon
+
+# List of giftcodes and their information.
 codes:
   samplecode:
-    commands: 
+    commands: # Gift after player enters Code.
       - give %player% diamond 1
-    message: "You have received 1 diamond!"
-    max-uses: 10
-    expiry: 2024-12-31T23:59:59
-    enabled: true
+    message: "You have received 1 diamond!" # Notification of receiving gifts.
+    max-uses: 10 # Number of players who can enter GiftCode.
+    expiry: 2024-12-31T23:59:59 # GiftCode operating time.
+    enabled: true # 'true' to enable active code, 'false' to disable code.
 
-# Various messages
+# Various notifications.
 messages:
   invalid-code: "The gift code you entered is invalid."
   expired-code: "The gift code you entered has expired."
@@ -43,8 +52,9 @@ messages:
   code-redeemed: "You have successfully redeemed the gift code!"
   code-already-redeemed: "You have already redeemed this code."
 
-# Limit the number of times each player can use a code
+# Limit the number of times each player can use the code.
 player-max-uses: 1
+
 ```
 
 ## Commands
