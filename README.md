@@ -30,7 +30,7 @@ Below is an example configuration in the `config.yml` file:
 
 ```yaml
 # Plugin made by QuangDev05
-# Plugin is already at version '${project.version}'
+# Plugin is already at version 'v1.0.0 | Stable'
 # Facebook: https://www.facebook.com/quangdev05.2024
 # Discord: quangdev05
 # Discord Community: https://discord.gg/MdgvJnegbM
