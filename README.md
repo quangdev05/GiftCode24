@@ -83,7 +83,7 @@ QuangDev05
 
 ## Version
 
-1.0
+v1.0.0 | Stable
 
 ## Contributing
 
