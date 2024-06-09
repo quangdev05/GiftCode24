@@ -1,0 +1,25 @@
+name: GiftCode
+version: '${project.version}'
+main: quangdev05.giftcode.GiftCode
+load: STARTUP
+authors:
+  - QuangDev05
+description: GiftCodePlugin is a Minecraft plugin that allows you to manage and use gift codes on your server. The plugin provides commands for admins to create, enable/disable, and reload gift codes, as well as commands for players to redeem codes and receive rewards.
+
+commands:
+  giftcode:
+    description: Manage gift codes.
+    usage: /<command> <create|del|reload|enable|disable|help> [arguments]
+    permission: giftcode.admin
+    aliases: [gc]
+  code:
+    description: Redeem a gift code.
+    usage: /<command> <code>
+    permission: giftcode.player
+permissions:
+  giftcode.admin:
+    description: Allows the use of giftcode admin commands.
+    default: op
+  giftcode.player:
+    description: Allows the use of redeeming gift codes.
+    default: true
