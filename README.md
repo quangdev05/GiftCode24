@@ -3,7 +3,7 @@
 ![Supported server version](https://img.shields.io/badge/minecraft-1.12x%20--_1.20x-green)
 [![Discord](https://img.shields.io/discord/1247029974154612828.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/HsSUVGSc3c)
 
-# GiftCodePlugin
+# GiftCode24
 
 GiftCode24 is a Minecraft plugin that allows you to manage and use gift codes on your server. This plugin provides commands for admins to create, enable/disable, delete, and reload gift codes, as well as commands for players to redeem codes and receive rewards. All configurations related to gift codes, messages, usage limits, and expiration times can be easily adjusted in the `config.yml` file.
 
