@@ -1,0 +1,12 @@
+# Gift Code Configuration File
+# This file defines settings for managing gift codes in the plugin.
+
+# Example of a gift code entry:
+samplecode:
+  commands:
+    - give %player% diamond 1  # Command to give the player 1 diamond when redeeming the code.
+  message: "You have received 1 diamond!"  # Message displayed to the player upon redeeming the code.
+  max-uses: 10  # Maximum number of times this code can be redeemed in total.
+  expiry: "2024-12-31T23:59:59"  # Expiration date and time for the code (ISO 8601 format).
+  enabled: true  # Whether the code is currently enabled and can be redeemed.
+  player-max-uses: 1  # Maximum number of times each player can redeem this code. Set to -1 for unlimited uses.
