@@ -1,11 +1,10 @@
 name: GiftCode24
 version: '${project.version}'
 main: quangdev05.giftcode24.GiftCode24
-api-version: 1.12
 load: STARTUP
-authors:
-  - QuangDev05
+author: QuangDev05
 description: GiftCodePlugin is a Minecraft plugin that allows you to manage and use gift codes on your server. The plugin provides commands for admins to create, enable/disable, and reload gift codes, as well as commands for players to redeem codes and receive rewards.
+website: https://www.spigotmc.org/resources/giftcode24.117453/
 
 commands:
   giftcode:
@@ -16,7 +15,7 @@ commands:
   code:
     description: Redeem a gift code
     usage: /<command>
-    permission: giftcode.player
+
 permissions:
   giftcode.admin:
     description: Allows use of admin gift code commands

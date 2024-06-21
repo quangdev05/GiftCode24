@@ -3,9 +3,12 @@
 # Facebook: https://www.facebook.com/quangdev05.2024
 # Discord: quangdev05
 # Discord Community: https://discord.gg/MdgvJnegbM
-# Github: https://github.com/PhamQuang2008/GiftCode
+# Github: https://github.com/QuangDev05/GiftCode24
 # Spigot: https://www.spigotmc.org/resources/giftcode24.117453/
 # BuiltByBit: https://builtbybit.com/resources/giftcode24.46671/
+
+update-checker:
+  enabled: true  # Set to false to disable automatic update checking
 
 messages:
   invalid-code: "The gift code you entered is invalid."
@@ -14,4 +17,3 @@ messages:
   code-disabled: "The gift code you entered is currently disabled."
   code-redeemed: "You have successfully redeemed the gift code!"
   code-already-redeemed: "You have already redeemed this code."
-

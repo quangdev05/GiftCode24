@@ -4,11 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,14 +23,42 @@ public class GiftCode24 extends JavaPlugin {
     public void onEnable() {
         createGiftCodesFile();
         loadGiftCodes();
-        saveDefaultConfig();
+        updateConfig(); // Call updateConfig() method to ensure default config is updated if necessary
         getCommand("giftcode").setExecutor(this);
         getCommand("code").setExecutor(this);
+
+        if (getConfig().getBoolean("update-checker.enabled", true)) {
+            new UpdateChecker(this).checkForUpdates();
+        }
+
+        // Send a fancy message to console
+        sendFancyMessage();
     }
+
+    private void sendFancyMessage() {
+        getLogger().info(" ");
+        getLogger().info("  ██████╗ ██████╗ ███╗   ██╗███████╗███████╗███████╗");
+        getLogger().info("  ██╔══██╗██╔══██╗████╗  ██║██╔════╝██╔════╝██╔════╝");
+        getLogger().info("  ██████╔╝██████╔╝██╔██╗ ██║███████╗█████╗  ███████╗");
+        getLogger().info("  ██╔═══╝ ██╔══██╗██║╚██╗██║╚════██║██╔══╝  ╚════██║");
+        getLogger().info("  ██║     ██║  ██║██║ ╚████║███████║███████╗███████║");
+        getLogger().info("  ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝╚══════╝");
+        getLogger().info(" ");
+        getLogger().info("  Plugin by: QuangDev05");
+        getLogger().info("  Version: " + getDescription().getVersion());
+        getLogger().info(" ");
+    }
+
 
     @Override
     public void onDisable() {
         saveGiftCodes();
+    }
+
+    private void updateConfig() {
+        // Update config only if it doesn't exist or if it's outdated
+        getConfig().options().copyDefaults(true);
+        saveConfig();
     }
 
     private void createGiftCodesFile() {
@@ -140,7 +167,7 @@ public class GiftCode24 extends JavaPlugin {
                 sender.sendMessage(ChatColor.YELLOW + "/giftcode list - List all created gift codes");
                 sender.sendMessage(ChatColor.YELLOW + "/giftcode <code> <player> - Assign a gift code to a specified player");
                 sender.sendMessage(ChatColor.YELLOW + "Author: QuangDev05");
-                sender.sendMessage(ChatColor.YELLOW + "Version: 1.1.0 | Stable");
+                sender.sendMessage(ChatColor.YELLOW + "Version: 1.2.0 | Stable");
                 return true;
             }
 
