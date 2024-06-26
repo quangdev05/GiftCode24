@@ -90,10 +90,11 @@ samplecode:
 ## Contact
 
 - **Author:** QuangDev05
-- **Facebook:** [QuangDev05](https://www.facebook.com/quangdev05.2024)
+- **Facebook:** [Phạm Quang](https://www.facebook.com/quangdev05)
+- **Facebook 2:** [QuangDev05](https://www.facebook.com/quangdev05.2024)
 - **Discord:** quangdev05
-- **Discord Community:** [Join our Discord](https://discord.gg/MdgvJnegbM)
-- **Github:** [PhamQuang2008/GiftCode](https://github.com/PhamQuang2008/GiftCode)
+- **Discord Community:** [Join our Discord](https://discord.gg/HsSUVGSc3c)
+- **Github:** [PhamQuang2008/GiftCode](https://github.com/QuangDev05/GiftCode)
 - **Spigot:** [GiftCode24 on Spigot](https://www.spigotmc.org/resources/giftcode24.117453/)
 - **BuiltByBit:** [GiftCode24 on BuiltByBit](https://builtbybit.com/resources/giftcode24.46671/)
 
