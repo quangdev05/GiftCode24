@@ -91,7 +91,6 @@ samplecode:
 
 - **Author:** QuangDev05
 - **Facebook:** [Phạm Quang](https://www.facebook.com/quangdev05)
-- **Facebook 2:** [QuangDev05](https://www.facebook.com/quangdev05.2024)
 - **Discord:** quangdev05
 - **Discord Community:** [Join our Discord](https://discord.gg/HsSUVGSc3c)
 - **Github:** [PhamQuang2008/GiftCode](https://github.com/QuangDev05/GiftCode)
