@@ -30,15 +30,15 @@
 
 ### For Admins
 
-- `/giftcode help`: Display help for plugin commands.
-- `/giftcode create <code>`: Create a new gift code.
-- `/giftcode create <name> random`: Generate 10 random gift codes with a base name.
-- `/giftcode del <code>`: Delete a gift code.
-- `/giftcode reload`: Reload the configuration file.
-- `/giftcode enable <code>`: Enable a gift code.
-- `/giftcode disable <code>`: Disable a gift code.
-- `/giftcode list`: List all created gift codes.
-- `/giftcode <code> <player>`: Assign a gift code to a specified player.
+- `/gc help`: Display help for plugin commands.
+- `/gc create <code>`: Create a new gift code.
+- `/gc create <name> random`: Generate 10 random gift codes with a base name.
+- `/gc del <code>`: Delete a gift code.
+- `/gc reload`: Reload the configuration file.
+- `/gc enable <code>`: Enable a gift code.
+- `/gc disable <code>`: Disable a gift code.
+- `/gc list`: List all created gift codes.
+- `/gc <code> <player>`: Assign a gift code to a specified player.
 
 ### For Players
 
@@ -49,18 +49,8 @@
 ### config.yml
 
 ```yaml
-# Plugin made by QuangDev05
-# Plugin is already at version '1.2.0 | Stable'
-# Facebook: https://www.facebook.com/quangdev05.2024
-# Discord: quangdev05
-# Discord Community: https://discord.gg/MdgvJnegbM
-# Github: https://github.com/QuangDev05/GiftCode24
-# Spigot: https://www.spigotmc.org/resources/giftcode24.117453/
-# BuiltByBit: https://builtbybit.com/resources/giftcode24.46671/
-
 update-checker:
   enabled: true  # Set to false to disable automatic update checking
-
 messages:
   invalid-code: "The gift code you entered is invalid."
   expired-code: "The gift code you entered has expired."
@@ -68,6 +58,7 @@ messages:
   code-disabled: "The gift code you entered is currently disabled."
   code-redeemed: "You have successfully redeemed the gift code!"
   code-already-redeemed: "You have already redeemed this code."
+players:
 ```
 
 ### giftcode.yml 
