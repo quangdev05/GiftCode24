@@ -41,12 +41,22 @@ messages:
 ```
 ### giftcode.yml 
 ```yaml
-# File dữ liệu người chơi.
+# File cấu hình Gift Code.
+# Tệp này xác định cài đặt để quản lý mã quà tặng trong plugin.
+
+# Code ví dụ:
+samplecode:
+  commands:
+  - give %player% diamond 1
+  message: You have received 1 diamond! # Thông báo hiển thị cho người chơi khi đổi mã.
+  max-uses: 10 # Tổng số lần tối đa mà mã này có thể được đổi. Đặt thành 999999999 để không giới hạn số lần sử dụng mã.
+  expiry: '2024-12-31T23:59:59' # Ngày và giờ hết hạn của mã (định dạng ISO 8601).
+  enabled: true # true để bật, false để tắt.
+  player-max-uses: 1 # Số lần tối đa mỗi người chơi có thể đổi mã này. Đặt thành -1 để sử dụng không giới hạn.
 ```
 ### dataplayer.yml 
 ```yaml
-# File cấu hình Gift Code
-# Tệp này xác định cài đặt để quản lý mã quà tặng trong plugin.
+# File dữ liệu người chơi.
 ```
 
 ## Contact
