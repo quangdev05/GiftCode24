@@ -1,6 +1,6 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/QuangDev05/GiftCode24)
 ![GitHub license](https://img.shields.io/github/license/PhamQuang2008/GiftCode)
-![Supported server version](https://img.shields.io/badge/minecraft-1.12x%20--_Latest-green)
+![Supported server version](https://img.shields.io/badge/minecraft-1.13x%20--_1.21x-green)
 [![Discord](https://img.shields.io/discord/1247029974154612828.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/HsSUVGSc3c)
 
 # GiftCode24 Plugin
