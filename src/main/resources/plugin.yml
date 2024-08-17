@@ -1,25 +1,22 @@
 name: GiftCode24
 version: '${project.version}'
 main: quangdev05.giftcode24.GiftCode24
+api-version: 1.13
 load: STARTUP
 author: QuangDev05
-description: GiftCodePlugin is a Minecraft plugin that allows you to manage and use gift codes on your server. The plugin provides commands for admins to create, enable/disable, and reload gift codes, as well as commands for players to redeem codes and receive rewards.
-website: https://www.spigotmc.org/resources/giftcode24.117453/
+description: "GiftCode24 là plugin quản lý mã quà tặng mạnh mẽ dành cho Minecraft. Nó cho phép quản trị viên tạo, quản lý và sử dụng mã quà tặng với các tùy chọn có thể định cấu hình như mức sử dụng tối đa, thời hạn sử dụng và giới hạn dành riêng cho người chơi. Các tính năng bao gồm tạo, xóa, bật, tắt, liệt kê và gán mã quà tặng. GiftCode24 giúp việc quản lý mã quà tặng trở nên đơn giản và hiệu quả."
+website: https://github.com/QuangDev05/GiftCode24
 
 commands:
   giftcode:
-    description: Manage gift codes
     usage: /<command>
     permission: giftcode.admin
     aliases: [gc]
   code:
-    description: Redeem a gift code
     usage: /<command>
 
 permissions:
   giftcode.admin:
-    description: Allows use of admin gift code commands
     default: op
   giftcode.player:
-    description: Allows players to redeem gift codes
     default: true

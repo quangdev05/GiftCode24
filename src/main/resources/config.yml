@@ -1,19 +1,24 @@
-# Plugin made by QuangDev05
-# Plugin is already at version '${project.version}'
-# Facebook: https://www.facebook.com/quangdev05.2024
-# Discord: quangdev05
+#  ██████╗ ██╗███████╗████████╗ ██████╗ ██████╗ ██████╗ ███████╗██████╗ ██╗  ██╗
+# ██╔════╝ ██║██╔════╝╚══██╔══╝██╔════╝██╔═══██╗██╔══██╗██╔════╝╚════██╗██║  ██║
+# ██║  ███╗██║█████╗     ██║   ██║     ██║   ██║██║  ██║█████╗   █████╔╝███████║
+# ██║   ██║██║██╔══╝     ██║   ██║     ██║   ██║██║  ██║██╔══╝  ██╔═══╝ ╚════██║
+# ╚██████╔╝██║██║        ██║   ╚██████╗╚██████╔╝██████╔╝███████╗███████╗     ██║
+#  ╚═════╝ ╚═╝╚═╝        ╚═╝    ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝╚══════╝     ╚═╝
+# Plugin made by QuangDev05.
+# Plugin made in Vietnam.
+# Facebook: https://www.facebook.com/quangdev05
+# Discord: quangdev05.
 # Discord Community: https://discord.gg/MdgvJnegbM
 # Github: https://github.com/QuangDev05/GiftCode24
 # Spigot: https://www.spigotmc.org/resources/giftcode24.117453/
 # BuiltByBit: https://builtbybit.com/resources/giftcode24.46671/
 
-update-checker:
-  enabled: true  # Set to false to disable automatic update checking
+check-update: true # false để tắt.
 
 messages:
-  invalid-code: "The gift code you entered is invalid."
-  expired-code: "The gift code you entered has expired."
-  max-uses-reached: "The gift code you entered has reached its maximum number of uses."
-  code-disabled: "The gift code you entered is currently disabled."
-  code-redeemed: "You have successfully redeemed the gift code!"
-  code-already-redeemed: "You have already redeemed this code."
+  invalid-code: "Mã quà tặng bạn đã nhập không hợp lệ."
+  code-expired: "Mã quà tặng bạn nhập đã hết hạn."
+  max-uses-reached: "Mã quà tặng bạn nhập đã đạt số lần sử dụng tối đa."
+  code-disabled: "Mã quà tặng bạn nhập hiện đã bị vô hiệu hóa."
+  code-redeemed: "Bạn đã đổi mã quà tặng thành công!"
+  code-already-redeemed: "Bạn đã đổi mã này."
