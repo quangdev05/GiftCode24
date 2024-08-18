@@ -64,6 +64,6 @@ samplecode:
 - **Facebook:** [Phạm Quang](https://www.facebook.com/quangdev05)
 - **Discord:** quangdev05
 - **Discord cộng đồng:** [QuangDev05 | Community](https://discord.gg/HsSUVGSc3c)
-- **Github:** [PhamQuang2008/GiftCode](https://github.com/QuangDev05/GiftCode)
+- **Github:** [QuangDev05/GiftCode](https://github.com/QuangDev05/GiftCode)
 - **Spigot:** [GiftCode24 trên Github](https://www.spigotmc.org/resources/giftcode24.117453/)
 - **BuiltByBit:** [GiftCode24 trên BuiltByBit](https://builtbybit.com/resources/giftcode24.46671/)
