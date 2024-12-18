@@ -31,21 +31,19 @@ public class GiftCode24 extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        createConfigFiles(); // Tạo tất cả các file cấu hình
+        createConfigFiles();
         loadGiftCodes();
         loadDataplayerConfig();
-        updateConfig(); // Cập nhật config mặc định
+        updateConfig();
         getCommand("giftcode").setExecutor(this);
         getCommand("code").setExecutor(this);
 
-        // Gửi thông điệp đẹp mắt đến console
         sendFancyMessage();
-        // Kiểm tra cập nhật sau khi gửi FancyMessage
         checkForUpdates();
     }
 
     private void createConfigFiles() {
-        createFile("config.yml"); // Thêm dòng này
+        createFile("config.yml");
         createFile("giftcode.yml");
         createFile("dataplayer.yml");
     }
@@ -57,7 +55,6 @@ public class GiftCode24 extends JavaPlugin {
             saveResource(fileName, false);
         }
         if (fileName.equals("config.yml")) {
-            // Đảm bảo nạp lại config
             getConfig().options().copyDefaults(true);
             saveConfig();
         } else if (fileName.equals("giftcode.yml")) {
@@ -93,7 +90,6 @@ public class GiftCode24 extends JavaPlugin {
     }
 
     private void updateConfig() {
-        // Update config only if it doesn't exist or if it's outdated
         getConfig().options().copyDefaults(true);
         saveConfig();
     }
@@ -132,7 +128,7 @@ public class GiftCode24 extends JavaPlugin {
             boolean enabled, int playerMaxUses) {
         if (giftCodes.containsKey(code)) {
             getLogger().warning("Mã quà tặng " + code + " đã tồn tại. Vui lòng tạo mã khác.");
-            return; // Dừng lại nếu mã đã tồn tại
+            return;
         }
 
         GiftCode giftCode = new GiftCode(commands, message, maxUses, expiry, enabled, playerMaxUses);
@@ -143,8 +139,8 @@ public class GiftCode24 extends JavaPlugin {
         giftCodesConfig.set(code + ".expiry", expiry);
         giftCodesConfig.set(code + ".enabled", enabled);
         giftCodesConfig.set(code + ".player-max-uses", playerMaxUses);
-        saveGiftCodes(); // Cập nhật lại file cấu hình
-        getLogger().info("Mã quà tặng " + code + " đã được tạo thành công!"); // Thông báo chỉ sau khi mã đã được tạo
+        saveGiftCodes();
+        getLogger().info("Mã quà tặng " + code + " đã được tạo thành công!");
     }
 
     private void deleteGiftCode(String code) {
@@ -165,7 +161,6 @@ public class GiftCode24 extends JavaPlugin {
                 return;
             }
 
-            // Lưu mã quà tặng vào cấu hình của người chơi
             List<String> assignedCodes = dataplayerConfig
                     .getStringList("players." + player.getUniqueId() + ".assignedCodes");
             if (assignedCodes == null) {
@@ -176,7 +171,6 @@ public class GiftCode24 extends JavaPlugin {
                 dataplayerConfig.set("players." + player.getUniqueId() + ".assignedCodes", assignedCodes);
                 saveDataplayerConfig();
 
-                // Thực hiện lệnh tặng quà tặng cho người chơi
                 for (String cmd : giftCode.getCommands()) {
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd.replace("%player%", player.getName()));
                 }
@@ -203,7 +197,7 @@ public class GiftCode24 extends JavaPlugin {
         List<String> usedCodes = dataplayerConfig.getStringList("players." + player.getUniqueId() + ".usedCodes");
         int playerMaxUses = getPlayerMaxUsesForCode(code);
         if (playerMaxUses == -1) {
-            return false; // Không giới hạn
+            return false;
         }
         return Collections.frequency(usedCodes, code) >= playerMaxUses;
     }
@@ -230,10 +224,10 @@ public class GiftCode24 extends JavaPlugin {
         boolean checkUpdate = getConfig().getBoolean("check-update", true);
 
         if (!checkUpdate) {
-            return; // Không kiểm tra cập nhật nếu tùy chọn check-update là false
+            return;
         }
 
-        String url = "https://api.github.com/repos/QuangDev05/GiftCode24/releases/latest"; // Thay thế bằng URL của bạn
+        String url = "https://api.github.com/repos/QuangDev05/GiftCode24/releases/latest";
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -246,30 +240,25 @@ public class GiftCode24 extends JavaPlugin {
                         String response = scanner.useDelimiter("\\A").next();
                         scanner.close();
 
-                        // Phân tích JSON để lấy phiên bản mới nhất
                         JSONObject jsonResponse = new JSONObject(response);
                         String latestVersion = jsonResponse.getString("tag_name");
 
-                        // Loại bỏ chữ 'v' nếu có
                         if (latestVersion.startsWith("v")) {
                             latestVersion = latestVersion.substring(1);
                         }
 
-                        // Biến final hoặc effectively final để sử dụng trong inner class
                         final String finalLatestVersion = latestVersion;
 
-                        // Kiểm tra và thông báo nếu phiên bản mới hơn
                         if (!finalLatestVersion.equals(currentVersion)) {
                             getLogger().info(ChatColor.YELLOW + "Đã có phiên bản mới của plugin! Phiên bản hiện tại: v"
                                     + currentVersion + ", Phiên bản mới: v" + finalLatestVersion);
-                            // Gửi thông báo cho admin mỗi 18 phút
                             Bukkit.getScheduler().runTaskTimer(GiftCode24.this, new BukkitRunnable() {
                                 @Override
                                 public void run() {
                                     getLogger().info(ChatColor.YELLOW
                                             + "Plugin đã có phiên bản mới: v" + finalLatestVersion);
                                 }
-                            }, 0L, 1080L); // 1080 ticks = 18 phút
+                            }, 0L, 1080L);
                         } else {
                             getLogger().info(
                                     ChatColor.GREEN + "Plugin đang ở phiên bản mới nhất v" + currentVersion);
@@ -281,7 +270,7 @@ public class GiftCode24 extends JavaPlugin {
                     e.printStackTrace();
                 }
             }
-        }.runTaskLater(this, 0L); // Chạy ngay lập tức khi plugin khởi động
+        }.runTaskLater(this, 0L);
     }
 
     private int getPlayerMaxUsesForCode(String code) {
@@ -289,7 +278,7 @@ public class GiftCode24 extends JavaPlugin {
             int playerMaxUses = giftCodes.get(code).getPlayerMaxUses();
             return playerMaxUses;
         }
-        return 1; // Giá trị mặc định nếu không tìm thấy mã
+        return 1;
     }
 
     @Override
@@ -319,7 +308,7 @@ public class GiftCode24 extends JavaPlugin {
             switch (args[0].toLowerCase()) {
                 case "create":
                     if (args.length == 2) {
-                        if (giftCodes.containsKey(args[1])) { // Kiểm tra mã quà tặng đã tồn tại
+                        if (giftCodes.containsKey(args[1])) {
                             sender.sendMessage(
                                     ChatColor.RED + "Mã quà tặng " + args[1] + " đã tồn tại. Vui lòng chọn mã khác.");
                         } else {
@@ -344,10 +333,10 @@ public class GiftCode24 extends JavaPlugin {
                     }
                     break;
                 case "reload":
-                    reloadConfig(); // Nạp lại config.yml
-                    createConfigFiles(); // Tạo lại các file cấu hình nếu cần
-                    loadGiftCodes(); // Tải lại dữ liệu từ giftcode.yml
-                    loadDataplayerConfig(); // Tải lại dữ liệu từ dataplayer.yml
+                    reloadConfig();
+                    createConfigFiles();
+                    loadGiftCodes();
+                    loadDataplayerConfig();
                     sender.sendMessage(ChatColor.GREEN + "Đã tải lại tất cả các file cấu hình!");
                     break;
                 case "enable":
@@ -385,11 +374,11 @@ public class GiftCode24 extends JavaPlugin {
                     }
                     break;
                     case "assign":
-                    if (args.length == 3) { // args[0] là "assign", args[1] là mã quà tặng, args[2] là tên người chơi
+                    if (args.length == 3) {
                         String code = args[1];
                         Player targetPlayer = Bukkit.getPlayer(args[2]);
                         if (targetPlayer != null) {
-                            assignGiftCodeToPlayer(sender, code, targetPlayer); // Gọi phương thức với biến sender
+                            assignGiftCodeToPlayer(sender, code, targetPlayer);
                             sender.sendMessage(ChatColor.GOLD + "Thất bại ⬆⬆⬆" + ChatColor.GRAY + " hoặc" + ChatColor.GREEN + " mã quà tặng " + code + " đã được gán cho "
                                     + targetPlayer.getName() + " thành công.");
                         } else {
@@ -416,7 +405,6 @@ public class GiftCode24 extends JavaPlugin {
                         player.sendMessage(ChatColor.RED + getConfig().getString("messages.code-disabled"));
                         return true;
                     }
-                    // Kiểm tra thời gian hết hạn
                     if (!giftCode.getExpiry().isEmpty()) {
                         try {
                             Date expiryDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(giftCode.getExpiry());
@@ -441,14 +429,12 @@ public class GiftCode24 extends JavaPlugin {
 
                     int playerMaxUses = getPlayerMaxUsesForCode(code);
                     if (playerMaxUses == -1) {
-                        // Không giới hạn
                     } else {
                         if (checkPlayerHasUsedCode(player, code)) {
                             player.sendMessage(ChatColor.RED + getConfig().getString("messages.code-already-redeemed"));
                             return true;
                         }
                     }
-                    // Execute commands
                     for (String cmd : giftCode.getCommands()) {
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd.replace("%player%", player.getName()));
                     }
