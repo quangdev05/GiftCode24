@@ -18,7 +18,9 @@ check-update: true # false để tắt.
 messages:
   invalid-code: "Mã quà tặng bạn đã nhập không hợp lệ."
   code-expired: "Mã quà tặng bạn nhập đã hết hạn."
-  max-uses-reached: "Mã quà tặng bạn nhập đã đạt số lần sử dụng tối đa."
+  max-uses-reached: "Mã quà tặng đã hết lượt sử dụng."
+  max-uses-perip: "Mã quà tặng này đã được sử dụng quá số lần cho phép từ địa chỉ IP của bạn."
   code-disabled: "Mã quà tặng bạn nhập hiện đã bị vô hiệu hóa."
   code-redeemed: "Bạn đã đổi mã quà tặng thành công!"
-  code-already-redeemed: "Bạn đã đổi mã này."
+  code-already-redeemed: "Bạn đã nhập mã này quá số lần quy định."
+
