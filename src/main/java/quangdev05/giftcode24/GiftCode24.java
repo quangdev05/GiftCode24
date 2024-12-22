@@ -73,12 +73,18 @@ public class GiftCode24 extends JavaPlugin {
 
     private void sendFancyMessage() {
         getLogger().info(" ");
-        getLogger().info(ChatColor.GREEN + " ██████╗ ██╗███████╗████████╗ ██████╗ ██████╗ ██████╗ ███████╗██████╗ ██╗  ██╗");
-        getLogger().info(ChatColor.GREEN + "██╔════╝ ██║██╔════╝╚══██╔══╝██╔════╝██╔═══██╗██╔══██╗██╔════╝╚════██╗██║  ██║");
-        getLogger().info(ChatColor.GREEN + "██║  ███╗██║█████╗     ██║   ██║     ██║   ██║██║  ██║█████╗   █████╔╝███████║");
-        getLogger().info(ChatColor.GREEN + "██║   ██║██║██╔══╝     ██║   ██║     ██║   ██║██║  ██║██╔══╝  ██╔═══╝ ╚════██║");
-        getLogger().info(ChatColor.GREEN + "╚██████╔╝██║██║        ██║   ╚██████╗╚██████╔╝██████╔╝███████╗███████╗     ██║");
-        getLogger().info(ChatColor.GREEN + " ╚═════╝ ╚═╝╚═╝        ╚═╝    ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝╚══════╝     ╚═╝");
+        getLogger().info(
+                ChatColor.GREEN + " ██████╗ ██╗███████╗████████╗ ██████╗ ██████╗ ██████╗ ███████╗██████╗ ██╗  ██╗");
+        getLogger().info(
+                ChatColor.GREEN + "██╔════╝ ██║██╔════╝╚══██╔══╝██╔════╝██╔═══██╗██╔══██╗██╔════╝╚════██╗██║  ██║");
+        getLogger().info(
+                ChatColor.GREEN + "██║  ███╗██║█████╗     ██║   ██║     ██║   ██║██║  ██║█████╗   █████╔╝███████║");
+        getLogger().info(
+                ChatColor.GREEN + "██║   ██║██║██╔══╝     ██║   ██║     ██║   ██║██║  ██║██╔══╝  ██╔═══╝ ╚════██║");
+        getLogger().info(
+                ChatColor.GREEN + "╚██████╔╝██║██║        ██║   ╚██████╗╚██████╔╝██████╔╝███████╗███████╗     ██║");
+        getLogger().info(
+                ChatColor.GREEN + " ╚═════╝ ╚═╝╚═╝        ╚═╝    ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝╚══════╝     ╚═╝");
         getLogger().info(" ");
         getLogger().info(ChatColor.GOLD + "  Tác giả: QuangDev05");
         getLogger().info(ChatColor.YELLOW + "  Phiên bản: v" + getDescription().getVersion());
@@ -140,7 +146,7 @@ public class GiftCode24 extends JavaPlugin {
     }
 
     private void createGiftCode(String code, List<String> commands, String message, int maxUses, String expiry,
-                                boolean enabled, int playerMaxUses, int maxUsesPerIP) {
+            boolean enabled, int playerMaxUses, int maxUsesPerIP) {
         if (giftCodes.containsKey(code)) {
             getLogger().warning("Mã quà tặng \"" + code + "\" đã tồn tại. Vui lòng tạo mã khác.");
             return;
@@ -169,12 +175,12 @@ public class GiftCode24 extends JavaPlugin {
         return new ArrayList<>(giftCodes.keySet());
     }
 
-private void assignGiftCodeToPlayer(CommandSender sender, String code, Player player) {
-    if (!giftCodes.containsKey(code)) {
-        sender.sendMessage(ChatColor.RED + "Mã quà tặng \"" + code + "\" không tồn tại!");
-        return;
-    }
-    if (giftCodes.containsKey(code)) {
+    private void assignGiftCodeToPlayer(CommandSender sender, String code, Player player) {
+        if (!giftCodes.containsKey(code)) {
+            sender.sendMessage(ChatColor.RED + "Mã quà tặng \"" + code + "\" không tồn tại!");
+            return;
+        }
+        if (giftCodes.containsKey(code)) {
             GiftCode giftCode = giftCodes.get(code);
             List<String> assignedCodes = dataplayerConfig
                     .getStringList("players." + player.getUniqueId() + ".assignedCodes");
@@ -190,9 +196,11 @@ private void assignGiftCodeToPlayer(CommandSender sender, String code, Player pl
             }
             player.sendMessage(ChatColor.GREEN + "Bạn đã được gán mã quà tặng \"" + code + "\"!");
             player.sendMessage(ChatColor.GREEN + giftCode.getMessage());
-            getLogger().info("Mã quà tặng \"" + code + "\" đã được gán thành công cho người chơi \"" + player.getName() + "\"");
+            getLogger().info(
+                    "Mã quà tặng \"" + code + "\" đã được gán thành công cho người chơi \"" + player.getName() + "\"");
         } else {
-            getLogger().warning("Không tìm thấy mã quà tặng \"" + code + "\" để gán cho người chơi \"" + player.getName() + "\"");
+            getLogger().warning(
+                    "Không tìm thấy mã quà tặng \"" + code + "\" để gán cho người chơi \"" + player.getName() + "\"");
         }
     }
 
@@ -329,7 +337,8 @@ private void assignGiftCodeToPlayer(CommandSender sender, String code, Player pl
                     if (args.length == 2) {
                         if (giftCodes.containsKey(args[1])) {
                             sender.sendMessage(
-                                    ChatColor.RED + "Mã quà tặng \"" + args[1] + "\" đã tồn tại. Vui lòng tạo mã khác.");
+                                    ChatColor.RED + "Mã quà tặng \"" + args[1]
+                                            + "\" đã tồn tại. Vui lòng tạo mã khác.");
                         } else {
                             createGiftCode(args[1], Collections.singletonList("give %player% diamond 1"),
                                     "Bạn đã nhận 1 viên kim cương!", 99, "2029-12-31T23:59:59", true, 1, 1);
@@ -337,7 +346,8 @@ private void assignGiftCodeToPlayer(CommandSender sender, String code, Player pl
                         }
                     } else if (args.length == 3 && args[2].equalsIgnoreCase("random")) {
                         createRandomGiftCodes(args[1], 10);
-                        sender.sendMessage(ChatColor.GREEN + "Đã tạo 10 mã quà tặng ngẫu nhiên với tên cơ sở \"" + args[1] + "\"");
+                        sender.sendMessage(
+                                ChatColor.GREEN + "Đã tạo 10 mã quà tặng ngẫu nhiên với tên cơ sở \"" + args[1] + "\"");
                     } else {
                         sender.sendMessage(
                                 ChatColor.RED + "Sử dụng: /giftcode create <code> hoặc /giftcode create <name> random");
@@ -392,21 +402,21 @@ private void assignGiftCodeToPlayer(CommandSender sender, String code, Player pl
                         sender.sendMessage(ChatColor.YELLOW + code);
                     }
                     break;
-case "assign":
-    if (args.length == 3) {
-        String code = args[1];
-        Player targetPlayer = Bukkit.getPlayer(args[2]);
-        if (targetPlayer != null) {
-            if (!giftCodes.containsKey(code)) {
-                sender.sendMessage(ChatColor.RED + "Mã quà tặng \"" + code + "\" không tồn tại!");
-                return true;
-            }
-            assignGiftCodeToPlayer(sender, code, targetPlayer);
-        } else {
-            sender.sendMessage(ChatColor.RED + "Không tìm thấy người chơi: " + args[2]);
-        }
-    } else {
-        sender.sendMessage(ChatColor.RED + "Sử dụng: /giftcode assign <code> <player>");
+                case "assign":
+                    if (args.length == 3) {
+                        String code = args[1];
+                        Player targetPlayer = Bukkit.getPlayer(args[2]);
+                        if (targetPlayer != null) {
+                            if (!giftCodes.containsKey(code)) {
+                                sender.sendMessage(ChatColor.RED + "Mã quà tặng \"" + code + "\" không tồn tại!");
+                                return true;
+                            }
+                            assignGiftCodeToPlayer(sender, code, targetPlayer);
+                        } else {
+                            sender.sendMessage(ChatColor.RED + "Không tìm thấy người chơi: " + args[2]);
+                        }
+                    } else {
+                        sender.sendMessage(ChatColor.RED + "Sử dụng: /giftcode assign <code> <player>");
                     }
                     break;
 
@@ -506,7 +516,7 @@ case "assign":
         private int playerMaxUses;
 
         public GiftCode(List<String> commands, String message, int maxUses, String expiry, boolean enabled,
-                        int playerMaxUses, int maxUsesPerIP) {
+                int playerMaxUses, int maxUsesPerIP) {
             this.commands = commands;
             this.message = message;
             this.maxUses = maxUses;
