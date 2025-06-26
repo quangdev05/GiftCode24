@@ -14,7 +14,7 @@
    - Chạy lại server hoặc sử dụng PlugMan để kích hoạt.
 
 ## Danh sách lệnh
-### Danh sách lệnh cho Admin (/giftcode)
+### Danh sách lệnh cho Admin (/giftcode, /gc) [giftcode.admin]
 - `/gc create <code>`: Tạo mã quà tặng.
 - `/gc create <name> random`: Tạo ngẫu nhiên 10 mã quà tặng.
 - `/gc del <code>`: Xóa mã quà tặng.
@@ -23,7 +23,7 @@
 - `/gc disable <code>`: Vô hiệu hóa mã quà tặng.
 - `/gc list`: Danh sách mã quà tặng.
 - `/gc assign <code> <player>`: Gán mã quà tặng cho người chơi.
-### Dách sách lệnh cho người chơi (/code)
+### Dách sách lệnh cho người chơi (/code) [giftcode.player]
 - `/code <code>`: Nhập mã quà tặng.
 
 ## Config mặc định
