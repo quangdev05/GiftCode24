@@ -23,4 +23,5 @@ messages:
   code-disabled: "Mã quà tặng bạn nhập hiện đã bị vô hiệu hóa."
   code-redeemed: "Bạn đã đổi mã quà tặng thành công!"
   code-already-redeemed: "Bạn đã nhập mã này quá số lần quy định."
+  not-enough-playtime: "Bạn cần chơi ít nhất {required} phút để sử dụng mã này. Hiện tại bạn mới chơi được {current} phút."
 

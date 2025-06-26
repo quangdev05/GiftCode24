@@ -18,3 +18,5 @@ samplecode:
   player-max-uses: 1
 # Giới hạn IP cho mã quà tặng. Đặt thành 0 để tắt tính năng, 1 là giới hạn 1 lần trên mỗi IP, 2 là 2 lần, 3 là 3 lần, ...
   player-max-uses-perip: 1
+# Thời gian chơi tối thiểu (phút) cần thiết để sử dụng mã.
+  required-playtime: 8
