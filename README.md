@@ -14,7 +14,7 @@
    - Chạy lại server hoặc sử dụng PlugMan để kích hoạt.
 
 ## Danh sách lệnh
-### Danh sách lệnh cho Admin (/giftcode)
+### Danh sách lệnh cho Admin (/giftcode, /gc) [giftcode.admin]
 - `/gc create <code>`: Tạo mã quà tặng.
 - `/gc create <name> random`: Tạo ngẫu nhiên 10 mã quà tặng.
 - `/gc del <code>`: Xóa mã quà tặng.
@@ -23,7 +23,7 @@
 - `/gc disable <code>`: Vô hiệu hóa mã quà tặng.
 - `/gc list`: Danh sách mã quà tặng.
 - `/gc assign <code> <player>`: Gán mã quà tặng cho người chơi.
-### Dách sách lệnh cho người chơi (/code)
+### Dách sách lệnh cho người chơi (/code) [giftcode.player]
 - `/code <code>`: Nhập mã quà tặng.
 
 ## Config mặc định
@@ -39,7 +39,7 @@
 # Plugin made in Vietnam.
 # Facebook: https://www.facebook.com/quangdev05
 # Discord: quangdev05.
-# Discord Community: https://discord.gg/MdgvJnegbM
+# Discord Community: https://discord.gg/4SGhHNmhE8
 # Github: https://github.com/QuangDev05/GiftCode24
 # Spigot: https://www.spigotmc.org/resources/giftcode24.117453/
 # BuiltByBit: https://builtbybit.com/resources/giftcode24.46671/
@@ -54,6 +54,7 @@ messages:
   code-disabled: "Mã quà tặng bạn nhập hiện đã bị vô hiệu hóa."
   code-redeemed: "Bạn đã đổi mã quà tặng thành công!"
   code-already-redeemed: "Bạn đã nhập mã này quá số lần quy định."
+  not-enough-playtime: "Bạn cần chơi ít nhất {required} phút để sử dụng mã này. Hiện tại bạn mới chơi được {current} phút."
 ```
 ### giftcode.yml 
 ```yaml
@@ -77,6 +78,8 @@ samplecode:
   player-max-uses: 1
 # Giới hạn IP cho mã quà tặng. Đặt thành 0 để tắt tính năng, 1 là giới hạn 1 lần trên mỗi IP, 2 là 2 lần, 3 là 3 lần, ...
   player-max-uses-perip: 1
+# Thời gian chơi tối thiểu (phút) cần thiết để sử dụng mã.
+  required-playtime: 8
 ```
 ### dataplayer.yml 
 ```yaml
@@ -95,7 +98,7 @@ players:
 - **Tác giả:** QuangDev05 [GnauQ]
 - **Facebook:** [Phạm Quang](https://www.facebook.com/quangdev05)
 - **Discord:** quangdev05
-- **Discord cộng đồng:** [QuangDev05 | Community](https://discord.gg/HsSUVGSc3c)
+- **Discord cộng đồng:** [HyperFast Studio](https://discord.gg/4SGhHNmhE8)
 - **Github:** [QuangDev05/GiftCode](https://github.com/QuangDev05/GiftCode)
 - **Spigot:** [GiftCode24 trên Github](https://www.spigotmc.org/resources/giftcode24.117453/)
 - **BuiltByBit:** [GiftCode24 trên BuiltByBit](https://builtbybit.com/resources/giftcode24.46671/)
