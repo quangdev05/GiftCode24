@@ -55,7 +55,7 @@ public class GiftCode24 extends JavaPlugin implements Listener {
         ItemStack button = new ItemStack(material);
         ItemMeta meta = button.getItemMeta();
 
-        meta.setDisplayName(ChatColor.YELLOW + displayName);
+        meta.setDisplayName(ChatColor.GREEN + displayName);
 
         List<String> lores = new ArrayList<>();
         lores.add(ChatColor.GRAY + lore);
@@ -69,7 +69,7 @@ public class GiftCode24 extends JavaPlugin implements Listener {
         ItemStack item = new ItemStack(Material.PAPER);
         ItemMeta meta = item.getItemMeta();
 
-        meta.setDisplayName(ChatColor.YELLOW + code);
+        meta.setDisplayName(ChatColor.GOLD + code);
 
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.GRAY + "Thông tin mã quà tặng:");
@@ -120,8 +120,14 @@ public class GiftCode24 extends JavaPlugin implements Listener {
         sendFancyMessage();
         checkForUpdates();
 
-        int pluginId = 24198;
-        Metrics metrics = new Metrics(this, pluginId);
+        try {
+            Class.forName("org.bstats.bukkit.Metrics");
+            int pluginId = 24198;
+            Metrics metrics = new Metrics(this, pluginId);
+            getLogger().info("bStats đã được bật.");
+        } catch (ClassNotFoundException e) {
+            getLogger().warning("Không tìm thấy thư viện bStats. Bỏ qua thống kê.");
+        }
     }
 
     private void createConfigFiles() {
@@ -330,7 +336,7 @@ private void assignGiftCodeToPlayer(CommandSender sender, String code, Player pl
         Inventory inv = Bukkit.createInventory(
                 null,
                 54,
-                ChatColor.BLUE + "Danh sách Gift Code"
+                ChatColor.GOLD + "Danh sách mã quà tặng"
         );
 
         int start = page * ITEMS_PER_PAGE;
@@ -650,7 +656,7 @@ case "assign":
     public void onInventoryClick(InventoryClickEvent event) {
         String title = event.getView().getTitle();
 
-        if (title.equals(ChatColor.BLUE + "Danh sách Gift Code")) {
+        if (title.equals(ChatColor.GOLD + "Danh sách mã quà tặng")) {
             event.setCancelled(true);
 
             if (event.getCurrentItem() == null) return;
@@ -688,7 +694,7 @@ case "assign":
 
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
-        if (event.getView().getTitle().equals(ChatColor.BLUE + "Danh sách Gift Code")) {
+        if (event.getView().getTitle().equals(ChatColor.GOLD + "Danh sách mã quà tặng")) {
             event.setCancelled(true);
         }
     }
