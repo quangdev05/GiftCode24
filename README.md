@@ -67,7 +67,8 @@ samplecode:
   commands:
     - give %player% diamond 1
 # Thông báo hiển thị cho người chơi khi đổi mã.
-  message: "You have received 1 diamond!"
+  message:
+    - "You have received 1 diamond!"
 # Tổng số lần tối đa mà mã này có thể được đổi. Đặt thành 999999999 để không giới hạn số lần sử dụng mã.
   max-uses: 10
 # Ngày và giờ hết hạn của mã (định dạng ISO 8601).
