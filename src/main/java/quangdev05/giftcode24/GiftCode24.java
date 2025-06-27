@@ -120,14 +120,8 @@ public class GiftCode24 extends JavaPlugin implements Listener {
         sendFancyMessage();
         checkForUpdates();
 
-        try {
-            Class.forName("org.bstats.bukkit.Metrics");
-            int pluginId = 24198;
-            Metrics metrics = new Metrics(this, pluginId);
-            getLogger().info("bStats đã được bật.");
-        } catch (ClassNotFoundException e) {
-            getLogger().warning("Không tìm thấy thư viện bStats. Bỏ qua thống kê.");
-        }
+        int pluginId = 24198;
+        Metrics metrics = new Metrics(this, pluginId);
     }
 
     private void createConfigFiles() {
@@ -186,7 +180,7 @@ public class GiftCode24 extends JavaPlugin implements Listener {
     private void loadGiftCodes() {
         giftCodes.clear();
         for (String key : new ArrayList<>(giftCodesConfig.getKeys(false))) {
-            String message = giftCodesConfig.getString(key + ".message");
+            Object messageObj = giftCodesConfig.get(key + ".message");
             List<String> commands = giftCodesConfig.getStringList(key + ".commands");
             int maxUses = giftCodesConfig.getInt(key + ".max-uses");
             String expiry = giftCodesConfig.getString(key + ".expiry");
@@ -194,7 +188,7 @@ public class GiftCode24 extends JavaPlugin implements Listener {
             int playerMaxUses = giftCodesConfig.getInt(key + ".player-max-uses");
             int maxUsesPerIP = giftCodesConfig.getInt(key + ".player-max-uses-perip");
             int requiredPlaytime = giftCodesConfig.getInt(key + ".required-playtime");
-            GiftCode giftCode = new GiftCode(commands, message, maxUses, expiry, enabled, playerMaxUses, maxUsesPerIP, requiredPlaytime);
+            GiftCode giftCode = new GiftCode(commands, messageObj, maxUses, expiry, enabled, playerMaxUses, maxUsesPerIP, requiredPlaytime);
             if (giftCodesConfig.isConfigurationSection(key + ".ip-usage-counts")) {
                 ConfigurationSection section = giftCodesConfig.getConfigurationSection(key + ".ip-usage-counts");
                 for (String ip : section.getKeys(false)) {
@@ -210,7 +204,7 @@ public class GiftCode24 extends JavaPlugin implements Listener {
         for (Map.Entry<String, GiftCode> entry : giftCodes.entrySet()) {
             GiftCode giftCode = entry.getValue();
             giftCodesConfig.set(entry.getKey() + ".commands", giftCode.getCommands());
-            giftCodesConfig.set(entry.getKey() + ".message", giftCode.getMessage());
+            giftCodesConfig.set(entry.getKey() + ".message", giftCode.getMessages());
             giftCodesConfig.set(entry.getKey() + ".max-uses", giftCode.getMaxUses());
             giftCodesConfig.set(entry.getKey() + ".expiry", giftCode.getExpiry());
             giftCodesConfig.set(entry.getKey() + ".enabled", giftCode.isEnabled());
@@ -230,7 +224,7 @@ public class GiftCode24 extends JavaPlugin implements Listener {
         }
     }
 
-    private void createGiftCode(String code, List<String> commands, String message, int maxUses, String expiry,
+    private void createGiftCode(String code, List<String> commands, List<String> message, int maxUses, String expiry,
                                 boolean enabled, int playerMaxUses, int maxUsesPerIP, int requiredPlaytime) {
         if (giftCodes.containsKey(code)) {
             getLogger().warning("Mã quà tặng \"" + code + "\" đã tồn tại. Vui lòng tạo mã khác.");
@@ -282,7 +276,9 @@ private void assignGiftCodeToPlayer(CommandSender sender, String code, Player pl
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd.replace("%player%", player.getName()));
             }
             player.sendMessage(getPrefix() + ChatColor.GREEN + "Bạn đã được gán mã quà tặng \"" + code + "\"!");
-            player.sendMessage(getPrefix() + ChatColor.GREEN + giftCode.getMessage());
+        for (String msg : giftCode.getMessages()) {
+            player.sendMessage(getPrefix() + ChatColor.GREEN + msg);
+        }
             sender.sendMessage(getPrefix() + ChatColor.GREEN + "Đã gán mã quà tặng \"" + code + "\" cho người chơi \"" + player.getName() + "\".");
             getLogger().info("Mã quà tặng \"" + code + "\" đã được gán thành công cho người chơi \"" + player.getName() + "\"");
            }
@@ -292,7 +288,7 @@ private void assignGiftCodeToPlayer(CommandSender sender, String code, Player pl
         for (int i = 0; i < amount; i++) {
             String code = baseName + "_" + ThreadLocalRandom.current().nextInt(1_000_000);
             createGiftCode(code, Collections.singletonList("give %player% diamond 1"),
-                    "Bạn đã nhận được một viên kim cương!", 99, "2029-12-31T23:59:59", true, 1, 1, 8);
+                    Collections.singletonList("Bạn đã nhận được một viên kim cương!"), 99, "2029-12-31T23:59:59", true, 1, 1, 8);
         }
     }
 
@@ -476,7 +472,7 @@ private void assignGiftCodeToPlayer(CommandSender sender, String code, Player pl
                                     ChatColor.RED + "Mã quà tặng \"" + args[1] + "\" đã tồn tại. Vui lòng tạo mã khác.");
                         } else {
                             createGiftCode(args[1], Collections.singletonList("give %player% diamond 1"),
-                                    "Bạn đã nhận 1 viên kim cương!", 99, "2029-12-31T23:59:59", true, 1, 1, 8);
+                                    Collections.singletonList("Bạn đã nhận 1 viên kim cương!"), 99, "2029-12-31T23:59:59", true, 1, 1, 8);
                             sender.sendMessage(getPrefix() + ChatColor.GREEN + "Mã quà tặng \"" + args[1] + "\" tạo thành công!");
                         }
                     } else if (args.length == 3 && args[2].equalsIgnoreCase("random")) {
@@ -634,7 +630,9 @@ case "assign":
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd.replace("%player%", player.getName()));
                     }
 
-                    player.sendMessage(getPrefix() + ChatColor.GREEN + giftCode.getMessage());
+                    for (String msg : giftCode.getMessages()) {
+                        player.sendMessage(getPrefix() + ChatColor.GREEN + msg);
+                    }
 
                     giftCode.setMaxUses(giftCode.getMaxUses() - 1);
 
@@ -704,17 +702,22 @@ case "assign":
 
         private int maxUsesPerIP;
         private List<String> commands;
-        private String message;
+        private List<String> messages;
         private int maxUses;
         private String expiry;
         private boolean enabled;
         private int playerMaxUses;
         private int requiredPlaytime;
 
-        public GiftCode(List<String> commands, String message, int maxUses, String expiry, boolean enabled,
+        public GiftCode(List<String> commands, Object messageObj, int maxUses, String expiry, boolean enabled,
                         int playerMaxUses, int maxUsesPerIP, int requiredPlaytime) {
             this.commands = commands;
-            this.message = message;
+            this.messages = new ArrayList<>();
+            if (messageObj instanceof String) {
+                this.messages.add((String) messageObj);
+            } else if (messageObj instanceof List) {
+                this.messages.addAll((List<String>) messageObj);
+            }
             this.maxUses = maxUses;
             this.expiry = expiry;
             this.enabled = enabled;
@@ -732,12 +735,12 @@ case "assign":
             this.commands = commands;
         }
 
-        public String getMessage() {
-            return message;
+        public List<String> getMessages() {
+            return messages;
         }
 
-        public void setMessage(String message) {
-            this.message = message;
+        public void setMessage(List<String> messages) {
+            this.messages = messages;
         }
 
         public int getMaxUses() {
