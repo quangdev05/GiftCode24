@@ -100,6 +100,5 @@ players:
 - **Facebook:** [Phạm Quang](https://www.facebook.com/quangdev05)
 - **Discord:** quangdev05
 - **Discord cộng đồng:** [HyperFast Studio](https://discord.gg/4SGhHNmhE8)
-- **Github:** [QuangDev05/GiftCode](https://github.com/QuangDev05/GiftCode)
-- **Spigot:** [GiftCode24 trên Github](https://www.spigotmc.org/resources/giftcode24.117453/)
-- **BuiltByBit:** [GiftCode24 trên BuiltByBit](https://builtbybit.com/resources/giftcode24.46671/)
+- **Spigot:** [GiftCode24 trên Spigot](https://www.spigotmc.org/resources/giftcode24.117453/)
+- **BuiltByBit:** [GiftCode24 trên BuiltByBit (v2.2.2-viStable là bản cập nhật cuối cùng](https://builtbybit.com/resources/giftcode24.46671/)
