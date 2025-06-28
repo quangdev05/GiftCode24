@@ -1,0 +1,23 @@
+# File cấu hình Gift Code.
+# Tệp này xác định cài đặt để quản lý mã quà tặng trong plugin.
+
+# Mã quà tặng ví dụ:
+samplecode:
+# Lệnh quà tặng khi đổi mã.
+  commands:
+    - give %player% diamond 1
+# Thông báo hiển thị cho người chơi khi đổi mã.
+  message:
+    - "You have received 1 diamond!"
+# Tổng số lần tối đa mà mã này có thể được đổi. Đặt thành 999999999 để không giới hạn số lần sử dụng mã.
+  max-uses: 10
+# Ngày và giờ hết hạn của mã (định dạng ISO 8601).
+  expiry: "2029-12-31T23:59:59"
+# true để bật, false để tắt.
+  enabled: true
+# Số lần tối đa mỗi người chơi có thể đổi mã này. Đặt thành -1 để sử dụng không giới hạn.
+  player-max-uses: 1
+# Giới hạn IP cho mã quà tặng. Đặt thành 0 để tắt tính năng, 1 là giới hạn 1 lần trên mỗi IP, 2 là 2 lần, 3 là 3 lần, ...
+  player-max-uses-perip: 1
+# Thời gian chơi tối thiểu (phút) cần thiết để sử dụng mã.
+  required-playtime: 8

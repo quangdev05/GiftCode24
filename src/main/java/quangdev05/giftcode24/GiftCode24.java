@@ -42,9 +42,6 @@ public class GiftCode24 extends JavaPlugin implements Listener {
     private FileConfiguration dataplayerConfig;
     private String currentVersion = getDescription().getVersion();
     private String latestVersion = null;
-    private String getPrefix() {
-        return ChatColor.GOLD + "[GC24] " + ChatColor.RESET;
-    }
 
     private static final int ITEMS_PER_PAGE = 45; // 5 hàng
     private static final int PREV_BUTTON_SLOT = 45; // Ô đầu hàng cuối
@@ -163,8 +160,6 @@ public class GiftCode24 extends JavaPlugin implements Listener {
         getLogger().info(" ");
         getLogger().info("  Tác giả: QuangDev05");
         getLogger().info("  Phiên bản hiện tại: v" + getDescription().getVersion());
-        getLogger().info("  Phiên bản mới nhất: " +
-                (latestVersion != null ? "v" + latestVersion : "Không xác định"));;
     }
 
     @Override
@@ -255,13 +250,13 @@ public class GiftCode24 extends JavaPlugin implements Listener {
         return new ArrayList<>(giftCodes.keySet());
     }
 
-private void assignGiftCodeToPlayer(CommandSender sender, String code, Player player) {
-    if (!giftCodes.containsKey(code)) {
-        sender.sendMessage(getPrefix() + ChatColor.RED + "Mã quà tặng \"" + code + "\" không tồn tại!");
-        getLogger().warning("Mã quà tặng \"" + code + "\" không tồn tại!");
-        return;
-    }
-    if (giftCodes.containsKey(code)) {
+    private void assignGiftCodeToPlayer(CommandSender sender, String code, Player player) {
+        if (!giftCodes.containsKey(code)) {
+            sender.sendMessage(ChatColor.RED + "Mã quà tặng " + ChatColor.YELLOW + "\"" + code + "\"" + ChatColor.RED + " không tồn tại!");
+            getLogger().warning("Mã quà tặng \"" + code + "\" không tồn tại!");
+            return;
+        }
+        if (giftCodes.containsKey(code)) {
             GiftCode giftCode = giftCodes.get(code);
             List<String> assignedCodes = dataplayerConfig
                     .getStringList("players." + player.getUniqueId() + ".assignedCodes");
@@ -275,13 +270,13 @@ private void assignGiftCodeToPlayer(CommandSender sender, String code, Player pl
             for (String cmd : giftCode.getCommands()) {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd.replace("%player%", player.getName()));
             }
-            player.sendMessage(getPrefix() + ChatColor.GREEN + "Bạn đã được gán mã quà tặng \"" + code + "\"!");
-        for (String msg : giftCode.getMessages()) {
-            player.sendMessage(getPrefix() + ChatColor.GREEN + msg);
-        }
-            sender.sendMessage(getPrefix() + ChatColor.GREEN + "Đã gán mã quà tặng \"" + code + "\" cho người chơi \"" + player.getName() + "\".");
+            player.sendMessage(ChatColor.GREEN + "Bạn đã được gán mã quà tặng " + ChatColor.YELLOW + "\"" + code + "\"" + ChatColor.GREEN + "!");
+            for (String msg : giftCode.getMessages()) {
+                player.sendMessage(ChatColor.GREEN + msg);
+            }
+            sender.sendMessage(ChatColor.GREEN + "Đã gán mã quà tặng \"" + ChatColor.YELLOW + code + ChatColor.GREEN + "\" cho người chơi \"" + ChatColor.AQUA + player.getName() + ChatColor.GREEN + "\".");
             getLogger().info("Mã quà tặng \"" + code + "\" đã được gán thành công cho người chơi \"" + player.getName() + "\"");
-           }
+        }
     }
 
     private void createRandomGiftCodes(String baseName, int amount) {
@@ -408,14 +403,12 @@ private void assignGiftCodeToPlayer(CommandSender sender, String code, Player pl
                         latestVersion = fetchedVersion;
 
                         if (!latestVersion.equals(currentVersion)) {
-                            getLogger().info("Đã có phiên bản mới của plugin! Phiên bản hiện tại: v"
-                                    + currentVersion + ", Phiên bản mới: v" + latestVersion);
-                            Bukkit.getScheduler().runTaskTimer(GiftCode24.this, new BukkitRunnable() {
+                            new BukkitRunnable() {
                                 @Override
                                 public void run() {
                                     getLogger().info("Plugin đã có phiên bản mới: v" + latestVersion);
                                 }
-                            }, 0L, 1080L);
+                            }.runTaskTimer(GiftCode24.this, 0L, 6000L);
                         } else {
                             getLogger().info(
                                     "Plugin đang ở phiên bản mới nhất v" + currentVersion);
@@ -460,7 +453,7 @@ private void assignGiftCodeToPlayer(CommandSender sender, String code, Player pl
             }
 
             if (!sender.hasPermission("giftcode.admin")) {
-                sender.sendMessage(getPrefix() + ChatColor.RED + "Bạn không có quyền sử dụng lệnh này.");
+                sender.sendMessage(ChatColor.RED + "Bạn không có quyền sử dụng lệnh này.");
                 return true;
             }
 
@@ -468,27 +461,27 @@ private void assignGiftCodeToPlayer(CommandSender sender, String code, Player pl
                 case "create":
                     if (args.length == 2) {
                         if (giftCodes.containsKey(args[1])) {
-                            sender.sendMessage(getPrefix() +
-                                    ChatColor.RED + "Mã quà tặng \"" + args[1] + "\" đã tồn tại. Vui lòng tạo mã khác.");
+                            sender.sendMessage(
+                                    ChatColor.RED + "Mã quà tặng \"" + ChatColor.YELLOW + args[1] + ChatColor.RED + "\" đã tồn tại. Vui lòng tạo mã khác.");
                         } else {
                             createGiftCode(args[1], Collections.singletonList("give %player% diamond 1"),
                                     Collections.singletonList("Bạn đã nhận 1 viên kim cương!"), 99, "2029-12-31T23:59:59", true, 1, 1, 8);
-                            sender.sendMessage(getPrefix() + ChatColor.GREEN + "Mã quà tặng \"" + args[1] + "\" tạo thành công!");
+                            sender.sendMessage(ChatColor.GREEN + "Mã quà tặng \"" + ChatColor.YELLOW + args[1] + ChatColor.GREEN + "\" tạo thành công!");
                         }
                     } else if (args.length == 3 && args[2].equalsIgnoreCase("random")) {
                         createRandomGiftCodes(args[1], 10);
-                        sender.sendMessage(getPrefix() + ChatColor.GREEN + "Đã tạo 10 mã quà tặng ngẫu nhiên với tên cơ sở \"" + args[1] + "\"");
+                        sender.sendMessage(ChatColor.GREEN + "Đã tạo 10 mã quà tặng ngẫu nhiên với tên cơ sở \"" + ChatColor.YELLOW + args[1] + "\"");
                     } else {
-                        sender.sendMessage(getPrefix() +
+                        sender.sendMessage(
                                 ChatColor.RED + "Sử dụng: /giftcode create <code> hoặc /giftcode create <name> random");
                     }
                     break;
                 case "del":
                     if (args.length == 2) {
                         deleteGiftCode(args[1]);
-                        sender.sendMessage(getPrefix() + ChatColor.GREEN + "Mã quà tặng \"" + args[1] + "\" đã bị xóa!");
+                        sender.sendMessage(ChatColor.GREEN + "Mã quà tặng \"" + ChatColor.YELLOW + args[1] + ChatColor.GREEN + "\" đã bị xóa!");
                     } else {
-                        sender.sendMessage(getPrefix() + ChatColor.RED + "Sử dụng: /giftcode del <code>");
+                        sender.sendMessage(ChatColor.RED + "Sử dụng: /giftcode del <code>");
                     }
                     break;
                 case "reload":
@@ -496,7 +489,7 @@ private void assignGiftCodeToPlayer(CommandSender sender, String code, Player pl
                     createConfigFiles();
                     loadGiftCodes();
                     loadDataplayerConfig();
-                    sender.sendMessage(getPrefix() + ChatColor.GREEN + "Đã tải lại tất cả các file cấu hình!");
+                    sender.sendMessage(ChatColor.GREEN + "Đã tải lại tất cả các file cấu hình!");
                     break;
                 case "enable":
                     if (args.length == 2) {
@@ -504,12 +497,12 @@ private void assignGiftCodeToPlayer(CommandSender sender, String code, Player pl
                         if (codeToEnable != null) {
                             codeToEnable.setEnabled(true);
                             saveGiftCodes();
-                            sender.sendMessage(getPrefix() + ChatColor.GREEN + "Mã quà tặng \"" + args[1] + "\" Đã kích hoạt!");
+                            sender.sendMessage(ChatColor.GREEN + "Mã quà tặng \"" + ChatColor.YELLOW + args[1] + ChatColor.GREEN + "\" Đã kích hoạt!");
                         } else {
-                            sender.sendMessage(getPrefix() + ChatColor.RED + "Mã quà tặng không tồn tại!");
+                            sender.sendMessage(ChatColor.RED + "Mã quà tặng không tồn tại!");
                         }
                     } else {
-                        sender.sendMessage(getPrefix() + ChatColor.RED + "Sử dụng: /giftcode enable <code>");
+                        sender.sendMessage(ChatColor.RED + "Sử dụng: /giftcode enable <code>");
                     }
                     break;
                 case "disable":
@@ -518,39 +511,39 @@ private void assignGiftCodeToPlayer(CommandSender sender, String code, Player pl
                         if (codeToDisable != null) {
                             codeToDisable.setEnabled(false);
                             saveGiftCodes();
-                            sender.sendMessage(getPrefix() + ChatColor.GREEN + "Mã quà tặng \"" + args[1] + "\" Đã bị vô hiệu hóa!");
+                            sender.sendMessage(ChatColor.GREEN + "Mã quà tặng \"" + ChatColor.YELLOW + args[1] + ChatColor.GREEN + "\" Đã bị vô hiệu hóa!");
                         } else {
-                            sender.sendMessage(getPrefix() + ChatColor.RED + "Không tồn tài!");
+                            sender.sendMessage(ChatColor.RED + "Không tồn tài!");
                         }
                     } else {
-                        sender.sendMessage(getPrefix() + ChatColor.RED + "Sử dụng: \"/giftcode disable <code>\"");
+                        sender.sendMessage(ChatColor.RED + "Sử dụng: \"/giftcode disable <code>\"");
                     }
                     break;
                 case "list":
                     if (sender instanceof Player) {
                         openGiftCodeList((Player) sender, 0);
                     } else {
-                        sender.sendMessage(getPrefix() + ChatColor.GOLD + "Danh sách mã quà tặng:");
+                        sender.sendMessage(ChatColor.GOLD + "Danh sách mã quà tặng:");
                         for (String code : listGiftCodes()) {
                             sender.sendMessage(ChatColor.GREEN + " " + code);
                         }
                     }
                     break;
-case "assign":
-    if (args.length == 3) {
-        String code = args[1];
-        Player targetPlayer = Bukkit.getPlayer(args[2]);
-        if (targetPlayer != null) {
-            if (!giftCodes.containsKey(code)) {
-                sender.sendMessage(getPrefix() + ChatColor.RED + "Mã quà tặng \"" + code + "\" không tồn tại!");
-                return true;
-            }
-            assignGiftCodeToPlayer(sender, code, targetPlayer);
-        } else {
-            sender.sendMessage(getPrefix() + ChatColor.RED + "Không tìm thấy người chơi: " + args[2]);
-        }
-    } else {
-        sender.sendMessage(getPrefix() + ChatColor.RED + "Sử dụng: /giftcode assign <code> <player>");
+                case "assign":
+                    if (args.length == 3) {
+                        String code = args[1];
+                        Player targetPlayer = Bukkit.getPlayer(args[2]);
+                        if (targetPlayer != null) {
+                            if (!giftCodes.containsKey(code)) {
+                                sender.sendMessage(ChatColor.RED + "Mã quà tặng \"" + ChatColor.YELLOW + code + ChatColor.RED + "\" không tồn tại!");
+                                return true;
+                            }
+                            assignGiftCodeToPlayer(sender, code, targetPlayer);
+                        } else {
+                            sender.sendMessage(ChatColor.RED + "Không tìm thấy người chơi: " + args[2]);
+                        }
+                    } else {
+                        sender.sendMessage(ChatColor.RED + "Sử dụng: /giftcode assign <code> <player>");
                     }
                     break;
 
@@ -564,12 +557,12 @@ case "assign":
                     GiftCode giftCode = giftCodes.get(code);
 
                     if (giftCode == null) {
-                        player.sendMessage(getPrefix() + ChatColor.RED + getConfig().getString("messages.invalid-code"));
+                        player.sendMessage(ChatColor.RED + getConfig().getString("messages.invalid-code"));
                         return true;
                     }
 
                     if (!giftCode.isEnabled()) {
-                        player.sendMessage(getPrefix() + ChatColor.RED + getConfig().getString("messages.code-disabled"));
+                        player.sendMessage(ChatColor.RED + getConfig().getString("messages.code-disabled"));
                         return true;
                     }
 
@@ -579,7 +572,7 @@ case "assign":
                             String message = getConfig().getString("messages.not-enough-playtime")
                                     .replace("{required}", String.valueOf(giftCode.getRequiredPlaytime()))
                                     .replace("{current}", String.valueOf(playerPlaytime));
-                            player.sendMessage(getPrefix() + ChatColor.RED + message);
+                            player.sendMessage(ChatColor.RED + message);
                             return true;
                         }
                     }
@@ -588,18 +581,18 @@ case "assign":
                         try {
                             Date expiryDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(giftCode.getExpiry());
                             if (new Date().after(expiryDate)) {
-                                player.sendMessage(getPrefix() + ChatColor.RED + getConfig().getString("messages.code-expired"));
+                                player.sendMessage(ChatColor.RED + getConfig().getString("messages.code-expired"));
                                 return true;
                             }
                         } catch (ParseException e) {
                             e.printStackTrace();
-                            player.sendMessage(getPrefix() + ChatColor.RED + "Đã xảy ra lỗi khi kiểm tra thời gian hết hạn.");
+                            player.sendMessage(ChatColor.RED + "Đã xảy ra lỗi khi kiểm tra thời gian hết hạn.");
                             return true;
                         }
                     }
 
                     if (giftCode.getMaxUses() <= 0) {
-                        player.sendMessage(getPrefix() + ChatColor.RED + getConfig().getString("messages.max-uses-reached"));
+                        player.sendMessage(ChatColor.RED + getConfig().getString("messages.max-uses-reached"));
                         return true;
                     }
 
@@ -616,13 +609,13 @@ case "assign":
 
                         int ipUsageCount = Collections.frequency(usedCodesByIP, code);
                         if (ipUsageCount >= giftCode.getMaxUsesPerIP()) {
-                            player.sendMessage(getPrefix() + ChatColor.RED + getConfig().getString("messages.max-uses-perip"));
+                            player.sendMessage(ChatColor.RED + getConfig().getString("messages.max-uses-perip"));
                             return true;
                         }
                     }
 
                     if (checkPlayerHasUsedCode(player, code)) {
-                        player.sendMessage(getPrefix() + ChatColor.RED + getConfig().getString("messages.code-already-redeemed"));
+                        player.sendMessage(ChatColor.RED + getConfig().getString("messages.code-already-redeemed"));
                         return true;
                     }
 
@@ -631,7 +624,7 @@ case "assign":
                     }
 
                     for (String msg : giftCode.getMessages()) {
-                        player.sendMessage(getPrefix() + ChatColor.GREEN + msg);
+                        player.sendMessage(ChatColor.GREEN + msg);
                     }
 
                     giftCode.setMaxUses(giftCode.getMaxUses() - 1);
@@ -640,10 +633,10 @@ case "assign":
 
                     saveGiftCodes();
                 } else {
-                    player.sendMessage(getPrefix() + ChatColor.RED + "Sử dụng: /code <code>");
+                    player.sendMessage(ChatColor.RED + "Sử dụng: /code <code>");
                 }
             } else {
-                sender.sendMessage(getPrefix() + ChatColor.RED + "Chỉ người chơi mới có thể sử dụng lệnh này.");
+                sender.sendMessage(ChatColor.RED + "Chỉ người chơi mới có thể sử dụng lệnh này.");
             }
             return true;
         }
