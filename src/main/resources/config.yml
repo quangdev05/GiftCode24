@@ -9,20 +9,18 @@
 # Facebook: https://www.facebook.com/quangdev05
 # Discord: quangdev05.
 # Discord Community: https://discord.gg/4SGhHNmhE8
-# Github: https://github.com/QuangDev05/GiftCode24
-# Spigot: https://www.spigotmc.org/resources/giftcode24.117453/
-# BuiltByBit: https://builtbybit.com/resources/giftcode24.46671/
+# Github: https://github.com/QuangDev05/
 
-# Cấu hình kiểm tra bản cập nhật
-check-update: true # false để tắt
+# Configure update check
+check-update: true # false to disable
 
 messages:
-  invalid-code: "Mã quà tặng bạn đã nhập không hợp lệ."
-  code-expired: "Mã quà tặng bạn nhập đã hết hạn."
-  max-uses-reached: "Mã quà tặng đã hết lượt sử dụng."
-  max-uses-perip: "Mã quà tặng này đã được sử dụng quá số lần cho phép từ địa chỉ IP của bạn."
-  code-disabled: "Mã quà tặng bạn nhập hiện đã bị vô hiệu hóa."
-  code-redeemed: "Bạn đã đổi mã quà tặng thành công!"
-  code-already-redeemed: "Bạn đã nhập mã này quá số lần quy định."
-  not-enough-playtime: "Bạn cần chơi ít nhất {required} phút để sử dụng mã này. Hiện tại bạn mới chơi được {current} phút."
+  invalid-code: "The gift code you entered is invalid."
+  code-expired: "The gift code you entered has expired."
+  max-uses-reached: "The gift code has reached its limit."
+  max-uses-perip: "This gift code has been used more times than allowed from your IP address."
+  code-disabled: "The gift code you entered is currently disabled."
+  code-redeemed: "You have successfully redeemed your gift code!"
+  code-already-redeemed: "You have entered this code more than the specified number of times."
+  not-enough-playtime: "You need to play for at least {required} minutes to use this code. You have currently played for {current} minutes."
 

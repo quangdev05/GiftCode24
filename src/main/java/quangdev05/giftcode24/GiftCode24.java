@@ -43,10 +43,10 @@ public class GiftCode24 extends JavaPlugin implements Listener {
     private String currentVersion = getDescription().getVersion();
     private String latestVersion = null;
 
-    private static final int ITEMS_PER_PAGE = 45; // 5 hàng
-    private static final int PREV_BUTTON_SLOT = 45; // Ô đầu hàng cuối
-    private static final int NEXT_BUTTON_SLOT = 53; // Ô cuối hàng cuối
-    private static final int PAGE_INFO_SLOT = 49;   // Giữa hàng cuối
+    private static final int ITEMS_PER_PAGE = 45; // 5 rows
+    private static final int PREV_BUTTON_SLOT = 45; // Last surrender cell
+    private static final int NEXT_BUTTON_SLOT = 53; // Cell at the end of the last row
+    private static final int PAGE_INFO_SLOT = 49;   // Middle of the last row
 
     private ItemStack createNavigationButton(String displayName, Material material, String lore) {
         ItemStack button = new ItemStack(material);
@@ -69,21 +69,21 @@ public class GiftCode24 extends JavaPlugin implements Listener {
         meta.setDisplayName(ChatColor.GOLD + code);
 
         List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GRAY + "Thông tin mã quà tặng:");
-        lore.add(ChatColor.WHITE + "• " + ChatColor.GRAY + "Số lượng: " + ChatColor.YELLOW + giftCode.getMaxUses());
+        lore.add(ChatColor.GRAY + "Gift code information:");
+        lore.add(ChatColor.WHITE + "• " + ChatColor.GRAY + "Quantity: " + ChatColor.YELLOW + giftCode.getMaxUses());
 
         int usedCount = calculateUsedCount(code);
-        lore.add(ChatColor.WHITE + "• " + ChatColor.GRAY + "Đã sử dụng: " + ChatColor.YELLOW + usedCount);
+        lore.add(ChatColor.WHITE + "• " + ChatColor.GRAY + "Used: " + ChatColor.YELLOW + usedCount);
 
         String expiry = giftCode.getExpiry().isEmpty() ?
-                ChatColor.GREEN + "Vô thời hạn" :
+                ChatColor.GREEN + "Indefinitely" :
                 ChatColor.YELLOW + giftCode.getExpiry();
-        lore.add(ChatColor.WHITE + "• " + ChatColor.GRAY + "Hạn dùng: " + expiry);
+        lore.add(ChatColor.WHITE + "• " + ChatColor.GRAY + "Indefinite Expiry Date: " + expiry);
 
         String status = giftCode.isEnabled() ?
-                ChatColor.GREEN + "Đang kích hoạt" :
-                ChatColor.RED + "Đã vô hiệu";
-        lore.add(ChatColor.WHITE + "• " + ChatColor.GRAY + "Trạng thái: " + status);
+                ChatColor.GREEN + "Activating" :
+                ChatColor.RED + "Disabled";
+        lore.add(ChatColor.WHITE + "• " + ChatColor.GRAY + "Status: " + status);
 
         meta.setLore(lore);
         item.setItemMeta(meta);
@@ -94,10 +94,10 @@ public class GiftCode24 extends JavaPlugin implements Listener {
         ItemStack item = new ItemStack(Material.BOOK);
         ItemMeta meta = item.getItemMeta();
 
-        meta.setDisplayName(ChatColor.GOLD + "Trang " + (currentPage + 1) + "/" + totalPages);
+        meta.setDisplayName(ChatColor.GOLD + "Page " + (currentPage + 1) + "/" + totalPages);
 
         List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GRAY + "Sử dụng các nút để chuyển trang");
+        lore.add(ChatColor.GRAY + "Use the buttons to turn pages");
         meta.setLore(lore);
 
         item.setItemMeta(meta);
@@ -158,8 +158,8 @@ public class GiftCode24 extends JavaPlugin implements Listener {
         getLogger().info("╚██████╔╝██║██║        ██║   ╚██████╗╚██████╔╝██████╔╝███████╗███████╗     ██║");
         getLogger().info(" ╚═════╝ ╚═╝╚═╝        ╚═╝    ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝╚══════╝     ╚═╝");
         getLogger().info(" ");
-        getLogger().info("  Tác giả: QuangDev05");
-        getLogger().info("  Phiên bản hiện tại: v" + getDescription().getVersion());
+        getLogger().info("  Author: QuangDev05");
+        getLogger().info("  Current version: v" + getDescription().getVersion());
     }
 
     @Override
@@ -222,7 +222,7 @@ public class GiftCode24 extends JavaPlugin implements Listener {
     private void createGiftCode(String code, List<String> commands, List<String> message, int maxUses, String expiry,
                                 boolean enabled, int playerMaxUses, int maxUsesPerIP, int requiredPlaytime) {
         if (giftCodes.containsKey(code)) {
-            getLogger().warning("Mã quà tặng \"" + code + "\" đã tồn tại. Vui lòng tạo mã khác.");
+            getLogger().warning("Gift code \"" + code + "\" already exists. Please create another code.");
             return;
         }
 
@@ -237,7 +237,7 @@ public class GiftCode24 extends JavaPlugin implements Listener {
         giftCodesConfig.set(code + ".player-max-uses-perip", maxUsesPerIP);
         giftCodesConfig.set(code + ".required-playtime", requiredPlaytime);
         saveGiftCodes();
-        getLogger().info("Mã quà tặng \"" + code + "\" đã được tạo thành công!");
+        getLogger().info("Gift code \"" + code + "\" has been successfully generated!");
     }
 
     private void deleteGiftCode(String code) {
@@ -252,8 +252,8 @@ public class GiftCode24 extends JavaPlugin implements Listener {
 
     private void assignGiftCodeToPlayer(CommandSender sender, String code, Player player) {
         if (!giftCodes.containsKey(code)) {
-            sender.sendMessage(ChatColor.RED + "Mã quà tặng " + ChatColor.YELLOW + "\"" + code + "\"" + ChatColor.RED + " không tồn tại!");
-            getLogger().warning("Mã quà tặng \"" + code + "\" không tồn tại!");
+            sender.sendMessage(ChatColor.RED + "Gift code " + ChatColor.YELLOW + "\"" + code + "\"" + ChatColor.RED + " does not exist!");
+            getLogger().warning("Gift code \"" + code + "\" does not exist!");
             return;
         }
         if (giftCodes.containsKey(code)) {
@@ -270,12 +270,12 @@ public class GiftCode24 extends JavaPlugin implements Listener {
             for (String cmd : giftCode.getCommands()) {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd.replace("%player%", player.getName()));
             }
-            player.sendMessage(ChatColor.GREEN + "Bạn đã được gán mã quà tặng " + ChatColor.YELLOW + "\"" + code + "\"" + ChatColor.GREEN + "!");
+            player.sendMessage(ChatColor.GREEN + "You have been assigned the gift code " + ChatColor.YELLOW + "\"" + code + "\"" + ChatColor.GREEN + "!");
             for (String msg : giftCode.getMessages()) {
                 player.sendMessage(ChatColor.GREEN + msg);
             }
-            sender.sendMessage(ChatColor.GREEN + "Đã gán mã quà tặng \"" + ChatColor.YELLOW + code + ChatColor.GREEN + "\" cho người chơi \"" + ChatColor.AQUA + player.getName() + ChatColor.GREEN + "\".");
-            getLogger().info("Mã quà tặng \"" + code + "\" đã được gán thành công cho người chơi \"" + player.getName() + "\"");
+            sender.sendMessage(ChatColor.GREEN + "Assigned gift code \"" + ChatColor.YELLOW + code + ChatColor.GREEN + "\" to player \"" + ChatColor.AQUA + player.getName() + ChatColor.GREEN + "\".");
+            getLogger().info("Gift code \"" + code + "\" has been successfully assigned to the player \"" + player.getName() + "\"");
         }
     }
 
@@ -283,7 +283,7 @@ public class GiftCode24 extends JavaPlugin implements Listener {
         for (int i = 0; i < amount; i++) {
             String code = baseName + "_" + ThreadLocalRandom.current().nextInt(1_000_000);
             createGiftCode(code, Collections.singletonList("give %player% diamond 1"),
-                    Collections.singletonList("Bạn đã nhận được một viên kim cương!"), 99, "2029-12-31T23:59:59", true, 1, 1, 8);
+                    Collections.singletonList("You have received a diamond!"), 99, "2029-12-31T23:59:59", true, 1, 1, 8);
         }
     }
 
@@ -327,7 +327,7 @@ public class GiftCode24 extends JavaPlugin implements Listener {
         Inventory inv = Bukkit.createInventory(
                 null,
                 54,
-                ChatColor.GOLD + "Danh sách mã quà tặng"
+                ChatColor.GOLD + "List of gift codes"
         );
 
         int start = page * ITEMS_PER_PAGE;
@@ -343,9 +343,9 @@ public class GiftCode24 extends JavaPlugin implements Listener {
         if (totalPages > 1) {
             if (page > 0) {
                 ItemStack prevButton = createNavigationButton(
-                        "« Trang Trước",
+                        "« Previous Page",
                         Material.ARROW,
-                        "Nhấn để về trang " + page
+                        "Click to return to page " + page
                 );
                 inv.setItem(PREV_BUTTON_SLOT, prevButton);
             }
@@ -355,9 +355,9 @@ public class GiftCode24 extends JavaPlugin implements Listener {
 
             if (page < totalPages - 1) {
                 ItemStack nextButton = createNavigationButton(
-                        "Trang Sau »",
+                        "Next Page »",
                         Material.ARROW,
-                        "Nhấn đến trang " + (page + 2)
+                        "Click to page" + (page + 2)
                 );
                 inv.setItem(NEXT_BUTTON_SLOT, nextButton);
             }
@@ -406,15 +406,15 @@ public class GiftCode24 extends JavaPlugin implements Listener {
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
-                                    getLogger().info("Plugin đã có phiên bản mới: v" + latestVersion);
+                                    getLogger().info("Plugin has new version: v" + latestVersion);
                                 }
                             }.runTaskTimer(GiftCode24.this, 0L, 6000L);
                         } else {
                             getLogger().info(
-                                    "Plugin đang ở phiên bản mới nhất v" + currentVersion);
+                                    "Plugin is at latest version v" + currentVersion);
                         }
                     } else {
-                        getLogger().warning("Không thể kết nối để kiểm tra bản cập nhật.");
+                        getLogger().warning("Unable to connect to check for updates.");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -434,26 +434,26 @@ public class GiftCode24 extends JavaPlugin implements Listener {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (label.equalsIgnoreCase("giftcode") || label.equalsIgnoreCase("gc")) {
             if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
-                sender.sendMessage(ChatColor.GOLD + "Danh sách lệnh");
-                sender.sendMessage(ChatColor.GREEN + " /gc create <code> - Tạo mã quà tặng");
-                sender.sendMessage(ChatColor.GREEN + " /gc create <name> random - Tạo ngẫu nhiên 10 mã quà tặng");
-                sender.sendMessage(ChatColor.GREEN + " /gc del <code> - Xóa mã quà tặng");
-                sender.sendMessage(ChatColor.GREEN + " /gc reload - Tải lại plugin");
-                sender.sendMessage(ChatColor.GREEN + " /gc enable <code> - Kích hoạt mã quà tặng");
-                sender.sendMessage(ChatColor.GREEN + " /gc disable <code> - Vô hiệu hóa mã quà tặng");
-                sender.sendMessage(ChatColor.GREEN + " /gc list - Danh sách mã quà tặng");
-                sender.sendMessage(ChatColor.GREEN + " /gc assign <code> <player> - Gán mã quà tặng cho người chơi ");
+                sender.sendMessage(ChatColor.GOLD + "Command List");
+                sender.sendMessage(ChatColor.GREEN + " /gc create <code> - Create a gift code");
+                sender.sendMessage(ChatColor.GREEN + " /gc create <name> random - Generate 10 random gift codes");
+                sender.sendMessage(ChatColor.GREEN + " /gc del <code> - Delete a gift code");
+                sender.sendMessage(ChatColor.GREEN + " /gc reload - Reload the plugin");
+                sender.sendMessage(ChatColor.GREEN + " /gc enable <code> - Enable a gift code");
+                sender.sendMessage(ChatColor.GREEN + " /gc disable <code> - Disable a gift code");
+                sender.sendMessage(ChatColor.GREEN + " /gc list - List all gift codes");
+                sender.sendMessage(ChatColor.GREEN + " /gc assign <code> <player> - Assign a gift code to a player");
                 sender.sendMessage("");
-                sender.sendMessage(ChatColor.GOLD + "Thông Tin:");
-                sender.sendMessage(ChatColor.YELLOW + " Tác giả: QuangDev05");
-                sender.sendMessage(ChatColor.YELLOW + " Phiên bản hiện tại: v" + currentVersion);
-                sender.sendMessage(ChatColor.YELLOW + " Phiên bản mới nhất: " +
-                        (latestVersion != null ? "v" + latestVersion : "Không xác định"));
+                sender.sendMessage(ChatColor.GOLD + "Information:");
+                sender.sendMessage(ChatColor.YELLOW + " Author: QuangDev05");
+                sender.sendMessage(ChatColor.YELLOW + " Current version: v" + currentVersion);
+                sender.sendMessage(ChatColor.YELLOW + " Latest version: " +
+                        (latestVersion != null ? "v" + latestVersion : "Unknown"));
                 return true;
             }
 
             if (!sender.hasPermission("giftcode.admin")) {
-                sender.sendMessage(ChatColor.RED + "Bạn không có quyền sử dụng lệnh này.");
+                sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
                 return true;
             }
 
@@ -462,91 +462,95 @@ public class GiftCode24 extends JavaPlugin implements Listener {
                     if (args.length == 2) {
                         if (giftCodes.containsKey(args[1])) {
                             sender.sendMessage(
-                                    ChatColor.RED + "Mã quà tặng \"" + ChatColor.YELLOW + args[1] + ChatColor.RED + "\" đã tồn tại. Vui lòng tạo mã khác.");
+                                    ChatColor.RED + "The gift code \"" + ChatColor.YELLOW + args[1] + ChatColor.RED + "\" already exists. Please create a different code.");
                         } else {
                             createGiftCode(args[1], Collections.singletonList("give %player% diamond 1"),
-                                    Collections.singletonList("Bạn đã nhận 1 viên kim cương!"), 99, "2029-12-31T23:59:59", true, 1, 1, 8);
-                            sender.sendMessage(ChatColor.GREEN + "Mã quà tặng \"" + ChatColor.YELLOW + args[1] + ChatColor.GREEN + "\" tạo thành công!");
+                                    Collections.singletonList("You have received 1 diamond!"), 99, "2029-12-31T23:59:59", true, 1, 1, 8);
+                            sender.sendMessage(ChatColor.GREEN + "The gift code \"" + ChatColor.YELLOW + args[1] + ChatColor.GREEN + "\" has been created successfully!");
                         }
                     } else if (args.length == 3 && args[2].equalsIgnoreCase("random")) {
                         createRandomGiftCodes(args[1], 10);
-                        sender.sendMessage(ChatColor.GREEN + "Đã tạo 10 mã quà tặng ngẫu nhiên với tên cơ sở \"" + ChatColor.YELLOW + args[1] + "\"");
+                        sender.sendMessage(ChatColor.GREEN + "10 random gift codes have been generated with base name \"" + ChatColor.YELLOW + args[1] + "\"");
                     } else {
                         sender.sendMessage(
-                                ChatColor.RED + "Sử dụng: /giftcode create <code> hoặc /giftcode create <name> random");
+                                ChatColor.RED + "Usage: /giftcode create <code> or /giftcode create <name> random");
                     }
                     break;
                 case "del":
                     if (args.length == 2) {
                         deleteGiftCode(args[1]);
-                        sender.sendMessage(ChatColor.GREEN + "Mã quà tặng \"" + ChatColor.YELLOW + args[1] + ChatColor.GREEN + "\" đã bị xóa!");
+                        sender.sendMessage(ChatColor.GREEN + "Gift code \"" + ChatColor.YELLOW + args[1] + ChatColor.GREEN + "\" has been deleted!");
                     } else {
-                        sender.sendMessage(ChatColor.RED + "Sử dụng: /giftcode del <code>");
+                        sender.sendMessage(ChatColor.RED + "Usage: /giftcode del <code>");
                     }
                     break;
+
                 case "reload":
                     reloadConfig();
                     createConfigFiles();
                     loadGiftCodes();
                     loadDataplayerConfig();
-                    sender.sendMessage(ChatColor.GREEN + "Đã tải lại tất cả các file cấu hình!");
+                    sender.sendMessage(ChatColor.GREEN + "All configuration files have been reloaded!");
                     break;
+
                 case "enable":
                     if (args.length == 2) {
                         GiftCode codeToEnable = giftCodes.get(args[1]);
                         if (codeToEnable != null) {
                             codeToEnable.setEnabled(true);
                             saveGiftCodes();
-                            sender.sendMessage(ChatColor.GREEN + "Mã quà tặng \"" + ChatColor.YELLOW + args[1] + ChatColor.GREEN + "\" Đã kích hoạt!");
+                            sender.sendMessage(ChatColor.GREEN + "Gift code \"" + ChatColor.YELLOW + args[1] + ChatColor.GREEN + "\" has been enabled!");
                         } else {
-                            sender.sendMessage(ChatColor.RED + "Mã quà tặng không tồn tại!");
+                            sender.sendMessage(ChatColor.RED + "Gift code does not exist!");
                         }
                     } else {
-                        sender.sendMessage(ChatColor.RED + "Sử dụng: /giftcode enable <code>");
+                        sender.sendMessage(ChatColor.RED + "Usage: /giftcode enable <code>");
                     }
                     break;
+
                 case "disable":
                     if (args.length == 2) {
                         GiftCode codeToDisable = giftCodes.get(args[1]);
                         if (codeToDisable != null) {
                             codeToDisable.setEnabled(false);
                             saveGiftCodes();
-                            sender.sendMessage(ChatColor.GREEN + "Mã quà tặng \"" + ChatColor.YELLOW + args[1] + ChatColor.GREEN + "\" Đã bị vô hiệu hóa!");
+                            sender.sendMessage(ChatColor.GREEN + "Gift code \"" + ChatColor.YELLOW + args[1] + ChatColor.GREEN + "\" has been disabled!");
                         } else {
-                            sender.sendMessage(ChatColor.RED + "Không tồn tài!");
+                            sender.sendMessage(ChatColor.RED + "Gift code does not exist!");
                         }
                     } else {
-                        sender.sendMessage(ChatColor.RED + "Sử dụng: \"/giftcode disable <code>\"");
+                        sender.sendMessage(ChatColor.RED + "Usage: /giftcode disable <code>");
                     }
                     break;
+
                 case "list":
                     if (sender instanceof Player) {
                         openGiftCodeList((Player) sender, 0);
                     } else {
-                        sender.sendMessage(ChatColor.GOLD + "Danh sách mã quà tặng:");
+                        sender.sendMessage(ChatColor.GOLD + "Gift code list:");
                         for (String code : listGiftCodes()) {
                             sender.sendMessage(ChatColor.GREEN + " " + code);
                         }
                     }
                     break;
+
                 case "assign":
                     if (args.length == 3) {
                         String code = args[1];
                         Player targetPlayer = Bukkit.getPlayer(args[2]);
                         if (targetPlayer != null) {
                             if (!giftCodes.containsKey(code)) {
-                                sender.sendMessage(ChatColor.RED + "Mã quà tặng \"" + ChatColor.YELLOW + code + ChatColor.RED + "\" không tồn tại!");
+                                sender.sendMessage(ChatColor.RED + "Gift code \"" + ChatColor.YELLOW + code + ChatColor.RED + "\" does not exist!");
                                 return true;
                             }
                             assignGiftCodeToPlayer(sender, code, targetPlayer);
                         } else {
-                            sender.sendMessage(ChatColor.RED + "Không tìm thấy người chơi: " + args[2]);
+                            sender.sendMessage(ChatColor.RED + "Player not found: " + args[2]);
                         }
                     } else {
-                        sender.sendMessage(ChatColor.RED + "Sử dụng: /giftcode assign <code> <player>");
+                        sender.sendMessage(ChatColor.RED + "Usage: /giftcode assign <code> <player>");
                     }
                     break;
-
             }
             return true;
         } else if (label.equalsIgnoreCase("code")) {
@@ -586,7 +590,7 @@ public class GiftCode24 extends JavaPlugin implements Listener {
                             }
                         } catch (ParseException e) {
                             e.printStackTrace();
-                            player.sendMessage(ChatColor.RED + "Đã xảy ra lỗi khi kiểm tra thời gian hết hạn.");
+                            player.sendMessage(ChatColor.RED + "An error occurred while checking the expiration time.");
                             return true;
                         }
                     }
@@ -600,10 +604,13 @@ public class GiftCode24 extends JavaPlugin implements Listener {
                         String playerIP = player.getAddress().getAddress().getHostAddress();
                         List<String> usedCodesByIP = new ArrayList<>();
 
-                        for (String uuid : dataplayerConfig.getConfigurationSection("players").getKeys(false)) {
-                            String ip = dataplayerConfig.getString("players." + uuid + ".ip");
-                            if (playerIP.equals(ip)) {
-                                usedCodesByIP.addAll(dataplayerConfig.getStringList("players." + uuid + ".usedCodes"));
+                        ConfigurationSection playersSection = dataplayerConfig.getConfigurationSection("players");
+                        if (playersSection != null) {
+                            for (String uuid : playersSection.getKeys(false)) {
+                                String ip = dataplayerConfig.getString("players." + uuid + ".ip");
+                                if (playerIP.equals(ip)) {
+                                    usedCodesByIP.addAll(dataplayerConfig.getStringList("players." + uuid + ".usedCodes"));
+                                }
                             }
                         }
 
@@ -633,10 +640,10 @@ public class GiftCode24 extends JavaPlugin implements Listener {
 
                     saveGiftCodes();
                 } else {
-                    player.sendMessage(ChatColor.RED + "Sử dụng: /code <code>");
+                    player.sendMessage(ChatColor.RED + "Usage: /code <code>");
                 }
             } else {
-                sender.sendMessage(ChatColor.RED + "Chỉ người chơi mới có thể sử dụng lệnh này.");
+                sender.sendMessage(ChatColor.RED + "Only players can use this command.");
             }
             return true;
         }
@@ -647,7 +654,7 @@ public class GiftCode24 extends JavaPlugin implements Listener {
     public void onInventoryClick(InventoryClickEvent event) {
         String title = event.getView().getTitle();
 
-        if (title.equals(ChatColor.GOLD + "Danh sách mã quà tặng")) {
+        if (title.equals(ChatColor.GOLD + "List of gift codes")) {
             event.setCancelled(true);
 
             if (event.getCurrentItem() == null) return;
@@ -662,7 +669,7 @@ public class GiftCode24 extends JavaPlugin implements Listener {
                 String displayName = pageInfo.getItemMeta().getDisplayName();
                 if (displayName.contains("/")) {
                     try {
-                        String[] parts = displayName.replace(ChatColor.GOLD + "Trang ", "").split("/");
+                        String[] parts = displayName.replace(ChatColor.GOLD + "Page ", "").split("/");
                         currentPage = Integer.parseInt(parts[0].trim()) - 1;
                     } catch (NumberFormatException ignored) {}
                 }
@@ -685,7 +692,7 @@ public class GiftCode24 extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
-        if (event.getView().getTitle().equals(ChatColor.GOLD + "Danh sách mã quà tặng")) {
+        if (event.getView().getTitle().equals(ChatColor.GOLD + "List of gift codes")) {
             event.setCancelled(true);
         }
     }

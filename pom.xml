@@ -5,7 +5,7 @@
 
     <groupId>quangdev05</groupId>
     <artifactId>GiftCode24</artifactId>
-    <version>2.2.2-viStable</version>
+    <version>2.2.3</version>
     <packaging>jar</packaging>
 
     <name>GiftCode24</name>
