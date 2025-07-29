@@ -35,4 +35,4 @@
 - **Discord:** quangdev05
 - **Community Discord:** [HyperFast Studio](https://discord.gg/4SGhHNmhE8)
 - **Spigot:** [GiftCode24 on Spigot](https://www.spigotmc.org/resources/giftcode24.117453/)
-- **BuiltByBit:** [GiftCode24 on BuiltByBit (v2.2.2-viStable is the last update](https://builtbybit.com/resources/giftcode24.46671/)
+- **BuiltByBit:** [GiftCode24 on BuiltByBit (v2.2.2-viStable is the last update)](https://builtbybit.com/resources/giftcode24.46671/)
