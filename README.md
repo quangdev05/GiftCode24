@@ -18,14 +18,19 @@
 
 ## Command List
 ### Command List for Admin (/giftcode, /gc) [giftcode.admin]
-- `/gc create <code>`: Create gift code.
-- `/gc create <name> random`: Randomly generate 10 gift codes.
+- `/gc help`: Show command list
+- `/gc create <code>`: Create a gift code.
+- `/gc create <code> -g`: Create and open GUI to set item rewards
+- `/gc create <base> -r [amount]`: Generate random codes (default 10)
+- `/gc create <base> -r [amount] -c <template>`: Random codes using <template>'s
+- `/gc guie <code>`: Open item GUI editor for a code
+- `/gc setperm <code> <permission|none>`: Set/clear required permission for a code
 - `/gc del <code>`: Delete gift code.
-- `/gc reload`: Reload Plugins.
-- `/gc enable <code>`: Enable gift code.
-- `/gc disable <code>`: Disable gift code.
-- `/gc list`: List of gift codes.
-- `/gc assign <code> <player>`: Assign gift code to player.
+- `/gc reload`: Reload the Plugin.
+- `/gc enable <code>`: Enable a gift code.
+- `/gc disable <code>`: Disable a gift code.
+- `/gc list`: List all gift codes.
+- `/gc assign <code> <player>`: Assign a gift code to a player.
 ### Command List for Player (/code) [giftcode.player]
 - `/code <code>`: Enter gift code.
 
