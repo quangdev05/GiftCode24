@@ -2,9 +2,10 @@ name: GiftCode24
 version: '${project.version}'
 main: quangdev05.giftcode24.GiftCode24
 api-version: 1.13
+folia-supported: true
 load: POSTWORLD
 author: QuangDev05
-description: "GiftCode24 là plugin quản lý mã quà tặng mạnh mẽ dành cho Minecraft. Nó cho phép quản trị viên tạo, quản lý và sử dụng mã quà tặng với các tùy chọn có thể định cấu hình như mức sử dụng tối đa, thời hạn sử dụng và giới hạn dành riêng cho người chơi. Các tính năng bao gồm tạo, xóa, bật, tắt, liệt kê và gán mã quà tặng. GiftCode24 giúp việc quản lý mã quà tặng trở nên đơn giản và hiệu quả."
+description: "GiftCode24 is a powerful gift code management plugin for Minecraft servers."
 website: https://github.com/quangdev05
 softdepend: [bStats]
 

@@ -23,4 +23,4 @@ messages:
   code-redeemed: "You have successfully redeemed your gift code!"
   code-already-redeemed: "You have entered this code more than the specified number of times."
   not-enough-playtime: "You need to play for at least {required} minutes to use this code. You have currently played for {current} minutes."
-
+  no-permission-code: "You don't have permission to use this code."

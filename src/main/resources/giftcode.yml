@@ -21,3 +21,7 @@ samplecode:
   player-max-uses-perip: 1
   # Minimum play time (minutes) required to use the code.
   required-playtime: 8
+  # Permissions, players need this permission to use gift codes. Leave blank so anyone can use it
+  permission: ''
+  # Item gui
+  items: []
