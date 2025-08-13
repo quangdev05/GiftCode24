@@ -8,7 +8,7 @@
 
 # [GiftCode24F Plugin](https://github.com/quangdev05/GiftCode24F/)
 **GiftCode24F** is a support version for Folia fork with full functionality similar to the original version, recoded separately to best optimize for Folia fork.
-<br>**Note:** The original version from version 3.0.0 has been supported for use on servers running fork Folia, so GiftCode24F will stop updating.
+### **Note:** The original version from version 3.0.0 has been supported for use on servers running fork Folia, so GiftCode24F will stop updating.
 
 ## Installation Instructions
 1. **Download and install plugins**
