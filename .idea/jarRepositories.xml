@@ -7,26 +7,6 @@
       <option name="url" value="https://repo.maven.apache.org/maven2" />
     </remote-repository>
     <remote-repository>
-      <option name="id" value="bungeecord" />
-      <option name="name" value="bungeecord" />
-      <option name="url" value="https://repo.md-5.net/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="sonatype" />
-      <option name="name" value="sonatype" />
-      <option name="url" value="https://oss.sonatype.org/content/groups/public/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="org.json" />
-      <option name="name" value="org.json" />
-      <option name="url" value="https://repo1.maven.org/maven2/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="tcoded-releases" />
-      <option name="name" value="tcoded-releases" />
-      <option name="url" value="https://repo.tcoded.com/releases" />
-    </remote-repository>
-    <remote-repository>
       <option name="id" value="papermc-repo" />
       <option name="name" value="papermc-repo" />
       <option name="url" value="https://repo.papermc.io/repository/maven-public/" />

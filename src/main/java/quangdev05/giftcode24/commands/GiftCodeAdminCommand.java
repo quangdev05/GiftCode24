@@ -48,9 +48,9 @@ public class GiftCodeAdminCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage("");
             sender.sendMessage(ChatColor.GOLD + "Information:");
             sender.sendMessage(ChatColor.YELLOW + " Author: QuangDev05");
-            sender.sendMessage(ChatColor.YELLOW + " Current version: v" + plugin.getDescription().getVersion());
+            sender.sendMessage(ChatColor.YELLOW + " Current version: " + plugin.getDescription().getVersion());
             String latest = plugin.getLatestVersion();
-            sender.sendMessage(ChatColor.YELLOW + " Latest version: " + (latest != null ? latest : "checking..."));
+            sender.sendMessage(ChatColor.YELLOW + " Latest version: " + (latest != null ? latest : "Cannot be checked"));
             return true;
         }
 
@@ -268,6 +268,12 @@ public class GiftCodeAdminCommand implements CommandExecutor, TabCompleter {
                 }
 
                 manager.assignGiftCodeToPlayer(sender, codeName, target);
+                break;
+
+            default:
+                // Xử lý lệnh không hợp lệ
+                sender.sendMessage(ChatColor.RED + "Unknown command: " + ChatColor.YELLOW + args[0]);
+                sender.sendMessage(ChatColor.GOLD + "Use " + ChatColor.YELLOW + "/giftcode help" + ChatColor.GOLD + " for command list");
                 break;
         }
         return true;

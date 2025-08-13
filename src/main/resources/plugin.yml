@@ -1,12 +1,12 @@
 name: GiftCode24
 version: '${project.version}'
 main: quangdev05.giftcode24.GiftCode24
-api-version: 1.13
+api-version: '1.19'
 folia-supported: true
-load: POSTWORLD
-author: QuangDev05
-description: "GiftCode24 is a powerful gift code management plugin for Minecraft servers."
-website: https://github.com/quangdev05
+prefix: GiftCode24
+authors: [ QuangDev05 ]
+description: GiftCode24 is a powerful gift code management plugin for Minecraft servers.
+website: https://quangdev05.link
 softdepend: [bStats]
 
 commands:
