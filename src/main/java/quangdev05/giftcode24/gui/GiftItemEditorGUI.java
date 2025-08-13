@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import quangdev05.giftcode24.manager.GiftCodeManager;
 
@@ -17,9 +18,11 @@ import java.util.List;
 
 public class GiftItemEditorGUI implements Listener {
 
+    private final JavaPlugin plugin;
     private final GiftCodeManager manager;
 
-    public GiftItemEditorGUI(GiftCodeManager manager) {
+    public GiftItemEditorGUI(JavaPlugin plugin, GiftCodeManager manager) {
+        this.plugin = plugin;
         this.manager = manager;
     }
 
@@ -49,18 +52,21 @@ public class GiftItemEditorGUI implements Listener {
         String title = e.getView().getTitle();
         if (!ChatColor.stripColor(title).startsWith("Edit items for ")) return;
 
+        Player player = (Player) e.getPlayer();
         String code = ChatColor.stripColor(title).replace("Edit items for ", "");
-        Inventory inv = e.getInventory();
-        List<ItemStack> items = new ArrayList<>();
-        for (int i = 0; i < inv.getSize(); i++) {
-            ItemStack it = inv.getItem(i);
-            if (it == null || it.getType() == Material.AIR) continue;
-            items.add(it.clone());
-        }
-        manager.setItemsForCode(code, items);
+        Inventory inv = e.getInventory(); // giữ tham chiếu để xử lý trong region task
 
-        if (e.getPlayer() instanceof Player) {
-            ((Player) e.getPlayer()).sendMessage(ChatColor.GREEN + "Saved " + items.size() + " items for code " + ChatColor.YELLOW + code + ChatColor.GREEN + ".");
-        }
+        Bukkit.getRegionScheduler().run(plugin, player.getLocation(), task -> {
+            List<ItemStack> items = new ArrayList<>();
+            for (int i = 0; i < inv.getSize(); i++) {
+                ItemStack it = inv.getItem(i);
+                if (it == null || it.getType() == Material.AIR) continue;
+                items.add(it.clone());
+            }
+
+            manager.setItemsForCode(code, items);
+            player.sendMessage(ChatColor.GREEN + "Saved " + items.size() + " items for code "
+                    + ChatColor.YELLOW + code + ChatColor.GREEN + ".");
+        });
     }
 }

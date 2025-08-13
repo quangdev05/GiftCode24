@@ -43,13 +43,21 @@ public class GiftCodeManager {
         return giftCodes;
     }
 
-    public boolean exists(String code) { return giftCodes.containsKey(code); }
+    public boolean exists(String code) {
+        return giftCodes.containsKey(code);
+    }
 
-    public GiftCode getGiftCode(String code) { return giftCodes.get(code); }
+    public GiftCode getGiftCode(String code) {
+        return giftCodes.get(code);
+    }
 
-    public GiftCode get(String code) { return giftCodes.get(code); }
+    public GiftCode get(String code) {
+        return giftCodes.get(code);
+    }
 
-    public void save() { giftCodesYml.saveAll(giftCodes); }
+    public void save() {
+        giftCodesYml.saveAll(giftCodes);
+    }
 
     public void createGiftCode(String code, List<String> commands, List<String> message, int maxUses, String expiry,
                                boolean enabled, int playerMaxUses, int maxUsesPerIP, int requiredPlaytime) {
@@ -101,38 +109,45 @@ public class GiftCodeManager {
             return;
         }
 
-        // Ghi dấu đã assign (giống code monolithic)
+        // Ghi dấu đã assign
         playerDataYml.addAssignedCode(player.getUniqueId(), code);
 
-        // Chạy commands
-        for (String cmd : gc.getCommands()) {
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd.replace("%player%", player.getName()));
-        }
+        // Chuẩn bị dữ liệu trước khi schedule (tránh concurrent modification)
+        final List<String> cmds = new ArrayList<>(gc.getCommands());
+        final List<String> msgs = new ArrayList<>(gc.getMessages());
+        final List<ItemStack> items = gc.getItemRewards() != null ? new ArrayList<>(gc.getItemRewards()) : Collections.emptyList();
 
-        // Phát item khi assign, mở comment khối dưới
-         java.util.List<org.bukkit.inventory.ItemStack> items = gc.getItemRewards();
-         if (items != null && !items.isEmpty()) {
-            for (org.bukkit.inventory.ItemStack it : items) {
-                 if (it == null) continue;
-                 java.util.Map<Integer, org.bukkit.inventory.ItemStack> leftovers = player.getInventory().addItem(it.clone());
-                 if (!leftovers.isEmpty()) {
-                     for (org.bukkit.inventory.ItemStack lf : leftovers.values()) {
-                         if (lf == null) continue;
-                         player.getWorld().dropItemNaturally(player.getLocation(), lf);
-                     }
-                 }
-             }
-         }
+        // 1) Chạy command bằng GlobalRegionScheduler (chuẩn Folia cho console)
+        Bukkit.getGlobalRegionScheduler().execute(plugin, () -> {
+            for (String cmd : cmds) {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd.replace("%player%", player.getName()));
+            }
+        });
 
-        // Gửi messages
-        for (String msg : gc.getMessages()) {
+        // 2) Phát item + gửi tin nhắn trên thread vùng của player
+        player.getScheduler().run(plugin, task -> {
+            // Phát item
+            if (!items.isEmpty()) {
+                for (ItemStack it : items) {
+                    if (it == null) continue;
+                    Map<Integer, ItemStack> leftovers = player.getInventory().addItem(it.clone());
+                    if (!leftovers.isEmpty()) {
+                        for (ItemStack lf : leftovers.values()) {
+                            if (lf == null) continue;
+                            player.getWorld().dropItemNaturally(player.getLocation(), lf);
+                        }
+                    }
+                }
+            }
+
+            // Gửi messages
             player.sendMessage(ChatColor.GREEN + "You have been assigned a gift code by the administrator.");
-        }
-        for (String msg : gc.getMessages()) {
-            player.sendMessage(ChatColor.GREEN + msg);
-        }
+            for (String msg : msgs) {
+                player.sendMessage(ChatColor.GREEN + msg);
+            }
+        }, null);
 
-        // Phản hồi admin + log
+        // 3) Phản hồi admin
         sender.sendMessage(ChatColor.GREEN + "Assigned gift code " + ChatColor.YELLOW + code
                 + ChatColor.GREEN + " to " + ChatColor.AQUA + player.getName() + ChatColor.GREEN + ".");
     }
@@ -186,7 +201,8 @@ public class GiftCodeManager {
         }
 
         for (int i = 0; i < amount; i++) {
-            String code; int tries = 0;
+            String code;
+            int tries = 0;
             do {
                 code = base + randomSuffix(8);
                 tries++;
@@ -244,9 +260,11 @@ public class GiftCodeManager {
 
     public String redeem(Player player, String code) {
         GiftCode giftCode = giftCodes.get(code);
-        if (giftCode == null) return ChatColor.RED + plugin.getConfig().getString("messages.invalid-code");
+        if (giftCode == null)
+            return ChatColor.RED + plugin.getConfig().getString("messages.invalid-code", "The gift code you entered is invalid.");
 
-        if (!giftCode.isEnabled()) return ChatColor.RED + plugin.getConfig().getString("messages.code-disabled");
+        if (!giftCode.isEnabled())
+            return ChatColor.RED + plugin.getConfig().getString("messages.code-disabled", "The gift code you entered is currently disabled.");
 
         String requiredPerm = giftCode.getPermission();
         if (requiredPerm != null && !requiredPerm.isEmpty() && !player.hasPermission(requiredPerm)) {
@@ -257,7 +275,7 @@ public class GiftCodeManager {
         if (giftCode.getRequiredPlaytime() > 0) {
             int playerPlaytime = player.getStatistic(Statistic.PLAY_ONE_MINUTE) / (20 * 60);
             if (playerPlaytime < giftCode.getRequiredPlaytime()) {
-                String message = plugin.getConfig().getString("messages.not-enough-playtime")
+                String message = plugin.getConfig().getString("messages.not-enough-playtime", "You need to play for at least {required} minutes to use this code. You have currently played for {current} minutes.")
                         .replace("{required}", String.valueOf(giftCode.getRequiredPlaytime()))
                         .replace("{current}", String.valueOf(playerPlaytime));
                 return ChatColor.RED + message;
@@ -268,7 +286,7 @@ public class GiftCodeManager {
             try {
                 Date expiryDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(giftCode.getExpiry());
                 if (new Date().after(expiryDate)) {
-                    return ChatColor.RED + plugin.getConfig().getString("messages.code-expired");
+                    return ChatColor.RED + plugin.getConfig().getString("messages.code-expired", "The gift code you entered has expired.");
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -277,7 +295,7 @@ public class GiftCodeManager {
         }
 
         if (giftCode.getMaxUses() <= 0) {
-            return ChatColor.RED + plugin.getConfig().getString("messages.max-uses-reached");
+            return ChatColor.RED + plugin.getConfig().getString("messages.max-uses-reached", "The gift code has reached its limit.");
         }
 
         if (giftCode.getMaxUsesPerIP() > 0) {
@@ -293,39 +311,54 @@ public class GiftCodeManager {
             }
             int ipUsageCount = Collections.frequency(usedCodesByIP, code);
             if (ipUsageCount >= giftCode.getMaxUsesPerIP()) {
-                return ChatColor.RED + plugin.getConfig().getString("messages.max-uses-perip");
+                return ChatColor.RED + plugin.getConfig().getString("messages.max-uses-perip", "This gift code has been used more times than allowed from your IP address.");
             }
         }
 
         if (checkPlayerHasUsedCode(player, code)) {
-            return ChatColor.RED + plugin.getConfig().getString("messages.code-already-redeemed");
+            return ChatColor.RED + plugin.getConfig().getString("messages.code-already-redeemed", "You have entered this code more than the specified number of times.");
         }
 
-        // Execute commands
-        for (String cmd : giftCode.getCommands()) {
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd.replace("%player%", player.getName()));
-        }
-        for (String msg : giftCode.getMessages()) {
-            player.sendMessage(ChatColor.GREEN + msg);
-        }
+        // --- Chuẩn bị dữ liệu (tránh sửa list gốc hoặc đụng thread-safety) ---
+        final List<String> cmds = new ArrayList<>(giftCode.getCommands());
+        final List<String> msgs = new ArrayList<>(giftCode.getMessages());
+        final List<ItemStack> items = giftCode.getItemRewards() != null ? new ArrayList<>(giftCode.getItemRewards()) : Collections.emptyList();
 
-        java.util.List<ItemStack> items = giftCode.getItemRewards();
-        if (items != null && !items.isEmpty()) {
-            for (ItemStack it : items) {
-                if (it == null) continue;
-                java.util.Map<Integer, ItemStack> leftovers = player.getInventory().addItem(it.clone());
-                if (!leftovers.isEmpty()) {
-                    for (ItemStack lf : leftovers.values()) {
-                        if (lf == null) continue;
-                        player.getWorld().dropItemNaturally(player.getLocation(), lf);
+        // 1) Chạy command console trên Global thread (Folia bắt buộc)
+        Bukkit.getGlobalRegionScheduler().execute(plugin, () -> {
+            for (String cmd : cmds) {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd.replace("%player%", player.getName()));
+            }
+        });
+
+        // 2) Phát item + gửi tin nhắn + cập nhật save trên thread vùng của player
+        player.getScheduler().run(plugin, task -> {
+            // Phát item
+            if (!items.isEmpty()) {
+                for (ItemStack it : items) {
+                    if (it == null) continue;
+                    Map<Integer, ItemStack> leftovers = player.getInventory().addItem(it.clone());
+                    if (!leftovers.isEmpty()) {
+                        for (ItemStack lf : leftovers.values()) {
+                            if (lf == null) continue;
+                            player.getWorld().dropItemNaturally(player.getLocation(), lf);
+                        }
                     }
                 }
             }
-        }
 
-        giftCode.setMaxUses(giftCode.getMaxUses() - 1);
-        addPlayerUsedCode(player, code);
-        save();
-        return ChatColor.GREEN + "Redeemed successfully.";
+            // Gửi messages
+            for (String msg : msgs) {
+                player.sendMessage(ChatColor.GREEN + msg);
+            }
+
+            // Update đếm dùng, giảm maxUses và lưu
+            giftCode.setMaxUses(giftCode.getMaxUses() - 1);
+            addPlayerUsedCode(player, code);
+            save(); // ghi YAML; nếu muốn không block thì chuyển sang AsyncScheduler
+        }, null);
+
+        // 3) Trả thông điệp thành công ngay cho người gọi lệnh
+        return ChatColor.GREEN + plugin.getConfig().getString("messages.code-redeemed", "You have successfully redeemed your gift code!");
     }
 }

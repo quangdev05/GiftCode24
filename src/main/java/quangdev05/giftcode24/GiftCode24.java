@@ -1,5 +1,7 @@
 package quangdev05.giftcode24;
 
+import org.bstats.bukkit.Metrics;
+
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.event.Listener;
 
@@ -38,7 +40,7 @@ public class GiftCode24 extends JavaPlugin implements Listener {
 
         // GUI
         this.giftCodeListGUI = new GiftCodeListGUI(this, giftCodeManager);
-        this.giftItemEditorGUI = new GiftItemEditorGUI(giftCodeManager);
+        this.giftItemEditorGUI = new GiftItemEditorGUI(this, giftCodeManager);
         getServer().getPluginManager().registerEvents(giftCodeListGUI, this);
         getServer().getPluginManager().registerEvents(giftItemEditorGUI, this);
 
@@ -59,16 +61,27 @@ public class GiftCode24 extends JavaPlugin implements Listener {
         updateChecker.checkLatestReleaseAsync();
 
         // bStats (keep plugin id from legacy)
+        int pluginId = 24198;
+        Metrics metrics = new Metrics(this, pluginId);
+
+        // Folia supported
+        if (isFolia()) {
+            getLogger().info("Running on Folia! Multithreading support enabled");
+        }
+    }
+    private boolean isFolia() {
         try {
-            Class<?> metricsClass = Class.forName("org.bstats.bukkit.Metrics");
-            Object metrics = metricsClass
-                    .getConstructor(JavaPlugin.class, int.class)
-                    .newInstance(this, 24198);
-        } catch (Exception ignored) { }
+            Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 
     @Override
     public void onDisable() {
+        // Đóng UpdateChccker
+        updateChecker.cancelTasks();
         // Persist current codes to file
         giftCodesYml.saveAll(giftCodeManager.getAll());
     }
@@ -83,7 +96,7 @@ public class GiftCode24 extends JavaPlugin implements Listener {
         getLogger().info(" ╚═════╝ ╚═╝╚═╝        ╚═╝    ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝╚══════╝     ╚═╝");
         getLogger().info(" ");
         getLogger().info("  Author: QuangDev05");
-        getLogger().info("  Current version: v" + getDescription().getVersion());
+        getLogger().info("  Current version: " + getDescription().getVersion());
     }
 
     public GiftCodeManager getGiftCodeManager() {
